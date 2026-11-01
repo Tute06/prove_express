@@ -350,6 +350,7 @@ function guardarPedido(o) {
 function reset() {
   tx(() => {
     for (const t of ['pedido_historial', 'pedido_items', 'pedidos', 'mensajes', 'conversaciones', 'carrito_items']) db.exec(`DELETE FROM ${t}`);
+    db.exec("DELETE FROM sqlite_sequence WHERE name IN ('pedido_historial', 'pedido_items', 'pedidos', 'mensajes', 'conversaciones')"); // numeración desde 1
   });
 }
 
