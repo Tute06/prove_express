@@ -9,6 +9,8 @@ const TINT = {
 };
 const CAT_EMOJI = { 'Lácteos': '🥛', 'Panadería': '🥖', 'Almacén': '🥫', 'Bebidas': '🥤', 'Frutas y verduras': '🍎', 'Carnicería': '🥩', 'Limpieza': '🧽', 'Perfumería': '🧴' };
 const tint = (cat) => TINT[cat] || '#f1ede2';
+// Foto real si hay; si no, el emoji del producto.
+const thumb = (p) => (p.img ? `<img src="/${p.img}" alt="${esc(p.nombre || p.name || '')}" loading="lazy">` : `<span class="e">${p.emoji || '🛒'}</span>`);
 
 async function api(url, opts = {}) {
   const res = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...opts, body: opts.body ? JSON.stringify(opts.body) : undefined });
@@ -64,7 +66,7 @@ function prodCard(p, extra = '') {
     : p.descuento ? `<span class="badge off">−${p.descuento}%</span>`
     : p.enPromo ? `<span class="badge promo-b" title="${esc(p.enPromo.join(', '))}">Promo</span>` : '';
   return `<div class="prod">
-    <div class="ph" style="--tint:${tint(p.ruta?.[0])}"><span class="e">${p.emoji}</span>${badge}
+    <div class="ph${p.img ? ' foto' : ''}" style="--tint:${tint(p.ruta?.[0])}">${thumb(p)}${badge}
       <button class="add" data-add="${p.id}" ${p.stock <= 0 ? 'disabled' : ''} aria-label="Agregar ${esc(p.nombre)}">+</button></div>
     <div class="pr">${money(p.precio)}${unidad}${p.precioAntes ? `<s>${money(p.precioAntes)}</s>` : ''}</div>
     <div class="nm">${esc(p.nombre)}</div>${extra}
@@ -99,7 +101,7 @@ function iaBox(el) {
       $('#iaRes').innerHTML = `<div class="summary">🤖 ${esc(r.reply)} <small>(${(r.meta.ms / 1000).toFixed(1)} s)</small></div>
         <table>${items.map((i, n) => `<tr>
           <td><input type="checkbox" data-i="${n}" ${i.status === 'ok' ? 'checked' : ''} ${i.productId ? '' : 'disabled'}></td>
-          <td>${i.emoji}</td>
+          <td><div class="mini">${thumb(i)}</div></td>
           <td><b>${esc(i.name || i.rawText)}</b> ${st[i.status] || ''}<br><small style="color:var(--muted)">“${esc(i.rawText)}”${i.note ? ' · ' + esc(i.note) : ''}</small>
             ${i.alternativeId ? `<br><label style="display:inline;color:var(--ink)"><input type="checkbox" data-alt="${n}" checked style="width:auto"> Reemplazar por <b>${esc(i.alternativeName)}</b></label>` : ''}</td>
           <td class="num">${i.quantity}${i.unit === 'kg' ? ' kg' : ' u'}</td>

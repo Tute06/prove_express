@@ -1,0 +1,252 @@
+{
+ "A01": {
+  "img": "img/productos/A01.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790070411846",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A02": {
+  "img": "img/productos/A02.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790070336293",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A03": {
+  "img": "img/productos/A03.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790070318329",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A04": {
+  "img": "img/productos/A04.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7797470000588",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A05": {
+  "img": "img/productos/A05.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7792180137944",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A07": {
+  "img": "img/productos/A07.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7793704000225",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A08": {
+  "img": "img/productos/A08.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790387009033",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A09": {
+  "img": "img/productos/A09.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7792540260138",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A10": {
+  "img": "img/productos/A10.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7792180004888",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A11": {
+  "img": "img/productos/A11.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790150100356",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A12": {
+  "img": "img/productos/A12.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7622300864934",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A13": {
+  "img": "img/productos/A13.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7794000960107",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A14": {
+  "img": "img/productos/A14.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7891167831179",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A15": {
+  "img": "img/productos/A15.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7798048720396",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "A17": {
+  "img": "img/productos/A17.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7792180006752",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "B03": {
+  "img": "img/productos/B03.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790895007248",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "B04": {
+  "img": "img/productos/B04.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790315000422",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "B05": {
+  "img": "img/productos/B05.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7792798012923",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "B07": {
+  "img": "img/productos/B07.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7794450008084",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "B08": {
+  "img": "img/productos/B08.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7622201816520",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "C01": {
+  "img": "img/productos/C01.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Hackfleisch-1.jpg",
+  "licencia": "CC BY-SA 3.0 (Wikimedia Commons)"
+ },
+ "C02": {
+  "img": "img/productos/C02.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Short_ribs_in_meat_counter.jpg",
+  "licencia": "CC BY-SA 2.0 (Wikimedia Commons)"
+ },
+ "C03": {
+  "img": "img/productos/C03.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Milanesa.jpg",
+  "licencia": "CC BY 2.0 (Wikimedia Commons)"
+ },
+ "C04": {
+  "img": "img/productos/C04.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:CHICKEN_BREAST.jpg",
+  "licencia": "CC BY-SA 4.0 (Wikimedia Commons)"
+ },
+ "C05": {
+  "img": "img/productos/C05.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Egg_cartons_with_chicken_eggs_03.jpg",
+  "licencia": "CC BY-SA 4.0 (Wikimedia Commons)"
+ },
+ "C06": {
+  "img": "img/productos/C06.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Chorizo_a_la_parrilla_de_Argentina.jpg",
+  "licencia": "CC BY 3.0 (Wikimedia Commons)"
+ },
+ "F01": {
+  "img": "img/productos/F01.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Banana_bunch.jpeg",
+  "licencia": "CC BY 3.0 (Wikimedia Commons)"
+ },
+ "F02": {
+  "img": "img/productos/F02.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Red_Apple.jpg",
+  "licencia": "CC BY 2.0 (Wikimedia Commons)"
+ },
+ "F03": {
+  "img": "img/productos/F03.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Potato_tubers_in_pail.jpg",
+  "licencia": "CC BY-SA 3.0 (Wikimedia Commons)"
+ },
+ "F04": {
+  "img": "img/productos/F04.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Onions_vegetable.jpg",
+  "licencia": "CC BY-SA 4.0 (Wikimedia Commons)"
+ },
+ "F05": {
+  "img": "img/productos/F05.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Round_Red_Tomato.jpg",
+  "licencia": "CC BY-SA 4.0 (Wikimedia Commons)"
+ },
+ "F06": {
+  "img": "img/productos/F06.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Head_of_lettuce_(3010140038).jpg",
+  "licencia": "CC BY 2.0 (Wikimedia Commons)"
+ },
+ "F07": {
+  "img": "img/productos/F07.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Lemon.jpg",
+  "licencia": "CC BY-SA 2.5 (Wikimedia Commons)"
+ },
+ "H05": {
+  "img": "img/productos/H05.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7506306237315",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "H06": {
+  "img": "img/productos/H06.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/4015400680819",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "H07": {
+  "img": "img/productos/H07.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7791290785328",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "H10": {
+  "img": "img/productos/H10.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7791293033198",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "H11": {
+  "img": "img/productos/H11.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/22117182",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "L01": {
+  "img": "img/productos/L01.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790742357007",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "L02": {
+  "img": "img/productos/L02.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7798111061562",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "L03": {
+  "img": "img/productos/L03.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790080037715",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "L04": {
+  "img": "img/productos/L04.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/77936271",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "L05": {
+  "img": "img/productos/L05.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/2702554115060",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "L06": {
+  "img": "img/productos/L06.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790742034526",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "L07": {
+  "img": "img/productos/L07.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7790787949823",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "P01": {
+  "img": "img/productos/P01.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Pan_franc%C3%A9s_Per%C3%BA.jpg",
+  "licencia": "CC BY-SA 4.0 (Wikimedia Commons)"
+ },
+ "P02": {
+  "img": "img/productos/P02.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7793890258752",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ },
+ "P03": {
+  "img": "img/productos/P03.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Facturas_argentinas.jpg",
+  "licencia": "CC BY 2.0 (Wikimedia Commons)"
+ },
+ "P04": {
+  "img": "img/productos/P04.jpg",
+  "fuente": "https://commons.wikimedia.org/wiki/File:Masa_de_pizza_con_salsa_de_tomates_y_cebolla_junto_a_sus_ingredientes_listos_para_armar.jpg",
+  "licencia": "CC BY-SA 3.0 (Wikimedia Commons)"
+ },
+ "P05": {
+  "img": "img/productos/P05.jpg",
+  "fuente": "https://world.openfoodfacts.org/product/7798158705429",
+  "licencia": "CC BY-SA (Open Food Facts)"
+ }
+}

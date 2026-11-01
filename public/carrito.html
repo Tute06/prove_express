@@ -45,7 +45,7 @@
     function render() {
       $('#cnt').textContent = cart.items.length ? `${cart.items.length} productos` : '';
       $('#cart').innerHTML = cart.items.length ? `<table class="cart-table">${cart.items.map((i) => `<tr>
-          <td style="width:60px"><div class="e">${i.emoji}</div></td>
+          <td style="width:60px"><div class="e${i.img ? ' foto' : ''}">${thumb(i)}</div></td>
           <td><b style="font-size:.95rem">${esc(i.nombre)}</b> ${i.tipo === 'promo' ? '<span class="pill info">promo</span>' : ''} ${i.precioAntes ? '<span class="pill danger">oferta</span>' : ''} ${i.sinStock ? '<span class="pill danger">stock insuficiente</span>' : ''}
             <br><small style="color:var(--muted)">${money(i.precio)}${i.unidad === 'kg' ? ' /kg' : ''}</small></td>
           <td class="num"><span class="qty">

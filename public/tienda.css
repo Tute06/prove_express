@@ -215,3 +215,11 @@ h2.sec a.more:hover { background: var(--navy); color: #fff; border-color: var(--
 @media (max-width: 600px) { .foot { grid-template-columns: 1fr; text-align: center; } .foot #clock { justify-self: center; } .foot span:first-child { display: none; } }
 body.shop { min-height: 100dvh; display: flex; flex-direction: column; }
 body.shop > main { flex: 1; width: 100%; }
+
+/* Fotos reales de producto */
+.prod .ph.foto { background: #fff; border: 1px solid var(--line); overflow: hidden; }
+.prod .ph img { width: 100%; height: 100%; object-fit: contain; padding: .5rem; transition: transform .25s; }
+.prod:hover .ph img { transform: scale(1.06); }
+.cart-table .e.foto { background: #fff; border: 1px solid var(--line); overflow: hidden; }
+.cart-table .e img, .mini img { width: 100%; height: 100%; object-fit: contain; }
+.mini { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; font-size: 1.5rem; background: #fff; border: 1px solid var(--line); overflow: hidden; }

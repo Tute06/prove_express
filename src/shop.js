@@ -6,6 +6,7 @@ const ai = require('./ai');
 const auth = require('./auth');
 const ofertas = require('./ofertas');
 const negocio = require('../data/negocio.json');
+const imagenes = require('../data/imagenes.json');
 
 const router = express.Router();
 const PERFIL = ['email', 'celular', 'telefono', 'direccion', 'zona', 'foto'];
@@ -59,7 +60,7 @@ function catalogoVista() {
   return db.productos()
     .map((p) => {
       const o = m.oferta.get(p.id);
-      return { ...p, precio: ofertas.precioFinal(p, m), precioAntes: o ? o.antes : null, descuento: o ? Math.round((1 - o.precio / o.antes) * 100) : null, enPromo: m.enPromo.get(p.id) || null, prioridad: ofertas.prioridad(p.id, m) };
+      return { ...p, img: imagenes[p.id]?.img || null, precio: ofertas.precioFinal(p, m), precioAntes: o ? o.antes : null, descuento: o ? Math.round((1 - o.precio / o.antes) * 100) : null, enPromo: m.enPromo.get(p.id) || null, prioridad: ofertas.prioridad(p.id, m) };
     })
     .sort((a, b) => b.prioridad - a.prioridad || b.ventas - a.ventas);
 }
@@ -92,7 +93,7 @@ function carritoView(dni) {
     } else {
       const p = vista.get(l.id);
       if (!p) continue;
-      items.push({ tipo: 'producto', id: p.id, nombre: p.nombre, emoji: p.emoji, precio: p.precio, precioAntes: p.precioAntes, cantidad: l.cantidad, subtotal: Math.round(p.precio * l.cantidad), unidad: p.unidad, sinStock: p.stock < l.cantidad });
+      items.push({ tipo: 'producto', id: p.id, nombre: p.nombre, emoji: p.emoji, img: p.img, precio: p.precio, precioAntes: p.precioAntes, cantidad: l.cantidad, subtotal: Math.round(p.precio * l.cantidad), unidad: p.unidad, sinStock: p.stock < l.cantidad });
     }
   }
   const subtotal = items.reduce((s, i) => s + i.subtotal, 0);
@@ -192,7 +193,7 @@ router.post('/api/ia/lista', express.json(), async (req, res) => {
   if (!limitar(req.dni, 20)) return res.status(429).json({ error: 'Usaste mucho el asistente, probá en unos minutos.' });
   try {
     const out = await ai.listaACarrito(text);
-    const items = desk.buildItems(out.items).map((i, n) => ({ ...i, emoji: db.producto(i.productId)?.emoji || '❓', note: out.items[n].note }));
+    const items = desk.buildItems(out.items).map((i, n) => ({ ...i, emoji: db.producto(i.productId)?.emoji || '❓', img: imagenes[i.productId]?.img || null, note: out.items[n].note }));
     res.json({ reply: out.reply, items, meta: out._meta });
   } catch (err) {
     console.error('[ia/lista]', err.message);

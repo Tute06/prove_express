@@ -69,3 +69,10 @@ cp .env.example .env   # completar OPENAI_API_KEY y HTTP_PORT
 - Transcripción automática de audios y llamados.
 - Integración con el stock del sistema de caja.
 - Ruteo de repartidores.
+
+## Créditos de imágenes
+Las fotos de productos de `public/img/productos/` provienen de:
+- **[Open Food Facts](https://world.openfoodfacts.org)** (productos de marca), con licencia [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/deed.es).
+- **[Wikimedia Commons](https://commons.wikimedia.org)** (frescos), cada una con su licencia libre (CC BY-SA / CC BY).
+
+La fuente y la licencia de cada foto están en [`data/imagenes.json`](data/imagenes.json). Algunas fotos muestran otra variante o marca similar del mismo tipo de producto. Los productos sin foto usan un emoji.
