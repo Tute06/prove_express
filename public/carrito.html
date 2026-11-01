@@ -89,7 +89,6 @@
       try {
         const o = await api('/api/checkout', { method: 'POST', body: { direccion: f.direccion.value, zona: f.zona.value, dia: f.dia.value, franja: f.franja.value, pago: f.pago.value, notas: f.notas.value } });
         document.querySelector('main').innerHTML = `<section class="bento" style="grid-template-columns:1fr;margin-top:1rem"><div class="tile tile-hero" style="min-height:260px">
-          <span class="float" style="right:8%;top:14%">🛵</span>
           <span class="eyebrow" style="color:var(--accent)">Pedido ${o.number}</span>
           <h1>¡Listo! <em>Ya lo estamos preparando.</em></h1>
           <p>Total ${money(o.total)} · ${esc(o.zone)} · ${esc(o.deliveryDay || '')} ${esc(o.deliverySlot)}. Te avisamos cuando salga el repartidor.</p>
