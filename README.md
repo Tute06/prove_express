@@ -1,5 +1,7 @@
 # 🛒 Changuito: mesa de pedidos con IA para envíos a domicilio
 
+> Sistema de gestión y pedidos de compras a domicilio (repo `prove_express`).
+
 Hackatón DonWeb Day 2026, "Del problema al servidor".
 
 ## El problema
