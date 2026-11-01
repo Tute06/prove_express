@@ -61,20 +61,29 @@ const SCHEMA = {
 };
 
 // Catálogo leído de la base en cada llamada (stock y ofertas al día).
-function catalogoTexto() {
+// Los productos sin stock solo se incluyen si el cliente los nombró (así la IA no los ofrece de más).
+const norm = (t) => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+function nombrado(p, texto) {
+  const palabras = norm(p.nombre).split(/[^a-z0-9]+/).filter((w) => w.length >= 4);
+  const coinciden = palabras.filter((w) => texto.includes(w)).length;
+  return coinciden >= 2 || (coinciden === 1 && palabras.length === 1);
+}
+function catalogoTexto(textoCliente = '') {
   const m = ofertas.mapas();
+  const texto = norm(textoCliente);
   return db.productos()
+    .filter((p) => p.stock > 0 || nombrado(p, texto))
     .map((p) => {
       const o = m.oferta.get(p.id);
       const promo = m.enPromo.get(p.id);
       const precio = o ? `OFERTA $${o.precio} (antes $${o.antes})` : `$${p.precio}`;
-      const stock = p.stock > 0 ? `stock ${p.stock}` : 'SIN STOCK (no lo menciones ni lo ofrezcas salvo que el cliente lo pida por nombre)';
+      const stock = p.stock > 0 ? `stock ${p.stock}` : 'SIN STOCK (el cliente lo pidió: avisale y ofrecé reemplazo)';
       return `${p.id} | ${p.nombre} | ${precio} por ${p.unidad} | ${stock}${promo ? ` | en promo: ${promo.join(', ')}` : ''}`;
     })
     .join('\n');
 }
 
-function systemPrompt(channel, order) {
+function systemPrompt(channel, order, textoCliente) {
   const ahora = new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', dateStyle: 'full', timeStyle: 'short' });
   const base = promptBase
     .replaceAll('{{NOMBRE_NEGOCIO}}', negocio.nombre)
@@ -92,7 +101,7 @@ function systemPrompt(channel, order) {
   return [
     base,
     `## NEGOCIO\n${JSON.stringify(negocio, null, 1)}`,
-    `## CATÁLOGO (id | nombre | precio | stock)\n${catalogoTexto()}`,
+    `## CATÁLOGO (id | nombre | precio | stock)\n${catalogoTexto(textoCliente)}`,
     `## CANAL DE ESTA CONVERSACIÓN: ${channel}`,
     `## PEDIDO ACTUAL DE ESTA CONVERSACIÓN\n${pedidoActual}`,
   ].join('\n\n');
@@ -137,7 +146,7 @@ async function agentTurn({ channel, messages, order }) {
   const started = Date.now();
   const data = await callOpenAI({
     model: MODEL,
-    messages: [{ role: 'system', content: systemPrompt(channel, order) }, ...historyMessages(messages)],
+    messages: [{ role: 'system', content: systemPrompt(channel, order, messages.filter((m) => m.from === 'cliente').map((m) => m.text).join(' ')) }, ...historyMessages(messages)],
     response_format: { type: 'json_schema', json_schema: { name: 'turno_agente', strict: true, schema: SCHEMA } },
   });
   const choice = data.choices?.[0];
@@ -163,7 +172,7 @@ async function listaACarrito(text) {
   const started = Date.now();
   const system = [
     promptLista.replaceAll('{{NOMBRE_NEGOCIO}}', negocio.nombre),
-    `## CATÁLOGO (id | nombre | precio | stock)\n${catalogoTexto()}`,
+    `## CATÁLOGO (id | nombre | precio | stock)\n${catalogoTexto(text)}`,
   ].join('\n\n');
   const data = await callOpenAI({
     model: MODEL,
@@ -205,7 +214,7 @@ async function similares(query, sinStock) {
     'Interpretá errores de tipeo y nombres coloquiales (ej. "coca" = Coca-Cola, "lavandina" = Ayudín, "fideos" = cualquier pasta seca).',
     'Si nada del catálogo sirve, devolvé `items` vacío y decilo.',
     'En `motivo` explicá en pocas palabras por qué sirve (ej. "otra marca, mismo tamaño"). En `reply`, 1 o 2 oraciones cordiales en español rioplatense.',
-    `## CATÁLOGO (id | nombre | precio | stock)\n${catalogoTexto()}`,
+    `## CATÁLOGO (id | nombre | precio | stock)\n${catalogoTexto(query)}`,
   ].join('\n\n');
   const user = sinStock.length ? `Busqué: "${query}". Lo encontré pero sin stock: ${sinStock.join(', ')}.` : `Busqué: "${query}" y no apareció nada.`;
   const data = await callOpenAI({
