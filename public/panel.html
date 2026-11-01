@@ -13,6 +13,7 @@
     <div style="flex:1"></div>
     <nav class="nav-links">
       <span id="aiStatus" class="pill">IA …</span>
+      <a class="hide-sm" href="/pedidos.html">Pedidos</a>
       <a class="hide-sm" href="/" target="_blank">Tienda de socios ↗</a>
       <a class="cart-pill" href="chat.html" target="_blank">💬 Chat cliente (WhatsApp simulado)</a>
     </nav>
@@ -26,22 +27,6 @@
         <h2><span class="eyebrow" style="display:block;width:100%">Todos los canales</span>Bandeja unificada <span class="pill count" id="inboxCount">0</span></h2>
         <div class="inbox" id="inbox"></div>
       </div>
-      <div class="card" style="margin-top:.8rem">
-        <h2>Cargar mensaje de otro canal</h2>
-        <form class="ingest" id="ingest">
-          <select name="channel">
-            <option value="whatsapp">WhatsApp (pegar mensaje)</option>
-            <option value="telefono">Llamado telefónico (notas o transcripción)</option>
-          </select>
-          <div class="two">
-            <input name="name" placeholder="Nombre">
-            <input name="phone" placeholder="Teléfono">
-          </div>
-          <textarea name="text" placeholder="Pegá el mensaje o escribí lo que dijo el cliente…" required></textarea>
-          <button type="submit">Procesar con IA</button>
-          <div class="examples" id="examples"></div>
-        </form>
-      </div>
     </section>
 
     <section class="card" id="detail">
@@ -49,8 +34,9 @@
     </section>
 
     <section class="card">
-      <h2>Pedidos</h2>
+      <h2><span class="eyebrow" style="display:block;width:100%">Los más nuevos primero</span>Pedidos recientes <span class="pill count" id="ordCount"></span></h2>
       <div class="board" id="board"></div>
+      <a class="btn-main ver-mas" href="/pedidos.html">Ver todos los pedidos →</a>
     </section>
   </section>
   </main>

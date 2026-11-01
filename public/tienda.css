@@ -277,3 +277,17 @@ body.admin #detail .empty { padding: 4rem 1rem; }
 /* Login: texto centrado en el panel azul, sin decoraciones */
 .login-brand { justify-content: flex-start; gap: 2rem; }
 .login-brand .brand-copy { margin: auto 0; display: grid; gap: 1.1rem; max-width: 34rem; }
+/* Resumen de pedidos y listado detallado */
+body.admin .ocard.web { border-left: 4px solid var(--navy-2); }
+body.admin .ver-mas { display: block; text-align: center; text-decoration: none; margin-top: .8rem; padding: .75rem; border-radius: 999px; }
+.orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 1rem; align-items: start; }
+@media (max-width: 600px) { .orders-grid { grid-template-columns: 1fr; } }
+.order-detail { display: grid; gap: .6rem; }
+.order-detail dl { display: grid; grid-template-columns: auto 1fr; gap: .2rem .8rem; font-size: .9rem; margin: 0; }
+.order-detail dt { color: var(--muted); font-weight: 600; }
+.order-detail dd { margin: 0; }
+.order-detail table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.order-detail td { padding: .35rem .3rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.order-detail td.num { text-align: right; white-space: nowrap; }
+.order-detail .actions { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+.order-detail .problems { display: flex; flex-wrap: wrap; gap: .3rem; }

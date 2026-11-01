@@ -4,7 +4,7 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const hora = (iso) => new Date(iso).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
 const ALERTA_MIN = 5;
 
-const CANAL = { whatsapp: '🟢 WhatsApp', telefono: '📞 Teléfono', web: '💬 Web' };
+const CANAL = { whatsapp: '🟢 WhatsApp', telefono: '📞 Teléfono', web: '🛒 Tienda web' };
 const ESTADO_CONV = {
   esperando_respuesta: ['Esperando', 'warn'],
   requiere_humano: ['Requiere humano', 'danger'],
@@ -134,16 +134,24 @@ function renderDetail() {
   th.scrollTop = th.scrollHeight;
 }
 
+const hace = (iso) => {
+  const min = Math.floor((Date.now() - Date.parse(iso)) / 60000);
+  return min < 1 ? 'recién' : min < 60 ? `hace ${min} min` : min < 1440 ? `hace ${Math.floor(min / 60)} h` : new Date(iso).toLocaleDateString('es-AR');
+};
+const ESTADO_PILL = { borrador: 'warn', confirmado: 'info', preparando: '', en_camino: '', entregado: 'muted', cancelado: 'danger' };
+
+// Resumen: los 6 pedidos más recientes de todos los canales (el detalle completo está en /pedidos.html).
 function renderBoard() {
-  $('#board').innerHTML = ESTADOS.filter(([k]) => k !== 'cancelado' || state.orders.some((o) => o.status === k)).map(([k, lbl]) => {
-    const os = state.orders.filter((o) => o.status === k);
-    return `<div class="col"><h3>${lbl} (${os.length})</h3>${os.map((o) => `
-      <div class="ocard" data-conv="${o.conversationId}">
+  const recientes = [...state.orders].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 6);
+  $('#ordCount').textContent = `${state.orders.length} en total`;
+  $('#board').innerHTML = recientes.map((o) => `
+      <div class="ocard ${o.channel === 'web' ? 'web' : ''}" data-conv="${o.conversationId}">
         <div class="row"><b>${o.number} · ${esc(o.customer?.name || '—')}</b><span>${money(o.total)}</span></div>
-        <small>${CANAL[o.channel] || ''} · ${o.items.length} ítems${o.zone ? ' · ' + esc(o.zone) : ''}${o.deliverySlot ? ' · ' + esc(o.deliverySlot) : ''}</small>
-        ${o.problems?.length ? `<div class="problems">${o.problems.slice(0, 3).map((p) => `<span class="pill warn">${esc(p)}</span>`).join('')}</div>` : ''}
-      </div>`).join('') || '<small style="color:var(--muted)">—</small>'}</div>`;
-  }).join('');
+        <div class="row" style="margin-top:.3rem"><span class="pill ${o.channel === 'web' ? 'info' : 'muted'}">${CANAL[o.channel] || o.channel}</span>
+          <span class="pill ${ESTADO_PILL[o.status] ?? ''}">${ESTADOS.find((e) => e[0] === o.status)?.[1] || o.status}</span>
+          <small style="margin-left:auto;color:var(--muted)">${hace(o.createdAt)}</small></div>
+        <small style="color:var(--muted)">${o.items.length} ítems${o.zone ? ' · ' + esc(o.zone) : ''}${o.deliverySlot ? ' · ' + esc(o.deliverySlot) : ''}</small>
+      </div>`).join('') || '<div class="empty">Todavía no hay pedidos.</div>';
 }
 
 async function renderKpis() {
@@ -192,12 +200,6 @@ document.addEventListener('click', async (e) => {
     await api(`/api/conversaciones/${state.selected}/cerrar`, { method: 'POST' });
     refresh();
   }
-  const ex = e.target.closest('button[data-ex]');
-  if (ex) {
-    const d = state.ejemplos[Number(ex.dataset.ex)];
-    const f = $('#ingest');
-    f.channel.value = d.channel; f.name.value = d.name; f.phone.value = d.phone; f.text.value = d.text;
-  }
 });
 
 document.addEventListener('submit', async (e) => {
@@ -206,12 +208,7 @@ document.addEventListener('submit', async (e) => {
   const btn = f.querySelector('button:not([type=button])');
   btn.disabled = true;
   try {
-    if (f.id === 'ingest') {
-      btn.textContent = 'La IA está procesando…';
-      const conv = await api('/api/mensajes', { method: 'POST', body: { channel: f.channel.value, name: f.name.value, phone: f.phone.value, text: f.text.value } });
-      state.selected = conv.id;
-      f.text.value = '';
-    } else if (f.id === 'reply' && f.text.value.trim()) {
+    if (f.id === 'reply' && f.text.value.trim()) {
       await api(`/api/conversaciones/${state.selected}/responder`, { method: 'POST', body: { text: f.text.value } });
       f.text.value = '';
     }
@@ -220,7 +217,6 @@ document.addEventListener('submit', async (e) => {
     toast(err.message);
   } finally {
     btn.disabled = false;
-    if (f.id === 'ingest') btn.textContent = 'Procesar con IA';
   }
 });
 
@@ -233,8 +229,9 @@ document.addEventListener('submit', async (e) => {
   const tick = () => { clock.textContent = new Date().toLocaleString('es-AR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }); };
   tick();
   setInterval(tick, 1000);
-  state.ejemplos = await api('/api/ejemplos');
-  $('#examples').innerHTML = '<small style="color:var(--muted);width:100%">Ejemplos:</small>' + state.ejemplos.map((x, i) => `<button type="button" class="small ghost" data-ex="${i}">${esc(x.titulo)}</button>`).join('');
+  // Enlace directo desde la lista de pedidos: /panel.html#conv-<id>
+  const m = location.hash.match(/conv-(\d+)/);
+  if (m) state.selected = Number(m[1]);
   await refresh();
   setInterval(refresh, 3000);
 })();

@@ -433,7 +433,7 @@
  },
  {
   "id": "B06",
-  "nombre": "Vino tinto Toro 1 L",
+  "nombre": "Vino tinto de mesa 1 L (tetra)",
   "categoria": "Bebidas",
   "precio": 2600,
   "stock": 20,
@@ -685,16 +685,16 @@
  },
  {
   "id": "H04",
-  "nombre": "Jabón en polvo Ala 800 g",
+  "nombre": "Lavandina concentrada X-5 2 L",
   "categoria": "Limpieza",
-  "precio": 5400,
+  "precio": 2600,
   "stock": 11,
   "unidad": "unidad",
   "ruta": [
    "Limpieza",
-   "Ropa"
+   "Lavandinas"
   ],
-  "emoji": "🧺",
+  "emoji": "🧪",
   "ventas": 270
  },
  {
@@ -771,22 +771,22 @@
  },
  {
   "id": "H08",
-  "nombre": "Limpiador de pisos Procenex 900 ml",
-  "precio": 2400,
+  "nombre": "Detergente Cif Bioactive 500 ml",
+  "precio": 2900,
   "stock": 18,
   "unidad": "unidad",
   "ruta": [
    "Limpieza",
-   "Pisos"
+   "Detergentes"
   ],
-  "emoji": "🧽",
+  "emoji": "🧴",
   "ventas": 230,
   "categoria": "Limpieza"
  },
  {
   "id": "H09",
-  "nombre": "Esponja Mortimer x 3",
-  "precio": 1500,
+  "nombre": "Esponja Scotch-Brite x 3",
+  "precio": 1800,
   "stock": 25,
   "unidad": "unidad",
   "ruta": [
