@@ -277,7 +277,3 @@ body.admin #detail .empty { padding: 4rem 1rem; }
 /* Login: texto centrado en el panel azul, sin decoraciones */
 .login-brand { justify-content: flex-start; gap: 2rem; }
 .login-brand .brand-copy { margin: auto 0; display: grid; gap: 1.1rem; max-width: 34rem; }
-.login-brand .lead { margin: 0; font-size: 1.15rem; line-height: 1.5; color: #cfd9ea; max-width: 38ch; }
-.perks { list-style: none; margin: .2rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
-.perks li { font-size: .85rem; font-weight: 700; padding: .45rem .9rem; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); color: #fff; }
-.perks li::before { content: "✓"; color: var(--accent); margin-right: .45rem; font-weight: 800; }
