@@ -2,6 +2,8 @@
 
 > Sistema de gestión y pedidos de compras a domicilio (repo `prove_express`).
 
+**Demo en vivo (Cloud Server de DonWeb):** http://201.32.132.186. Tienda de socios con DNI **30111222** y socio **1001**; panel de envíos en http://201.32.132.186/panel.html.
+
 Hackatón DonWeb Day 2026, "Del problema al servidor".
 
 ## El problema
