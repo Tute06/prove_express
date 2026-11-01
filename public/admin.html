@@ -22,6 +22,7 @@
         <label>Clave <input name="clave" type="password" autocomplete="current-password" required></label>
         <div class="err" id="err"></div>
         <button class="btn-main">Ingresar</button>
+        <div class="demo" id="demo" style="display:none"></div>
         <a href="/login.html" style="font-size:.85rem;text-align:center">¿Sos socio? Ingresá a la tienda</a>
       </form>
     </section>
@@ -31,6 +32,14 @@
     const clock = document.getElementById('clock');
     const tick = () => { clock.textContent = new Date().toLocaleString('es-AR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }); };
     tick(); setInterval(tick, 1000);
+    fetch('/api/admin/demo').then((r) => r.json()).then((d) => {
+      if (!d.usuario) return;
+      const el = document.getElementById('demo');
+      el.innerHTML = 'Demo para el jurado: usuario <b></b> · clave <b></b>';
+      el.querySelectorAll('b')[0].textContent = d.usuario;
+      el.querySelectorAll('b')[1].textContent = d.clave;
+      el.style.display = '';
+    }).catch(() => {});
     document.getElementById('f').onsubmit = async (e) => {
       e.preventDefault();
       const f = e.target;

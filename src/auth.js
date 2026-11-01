@@ -59,7 +59,7 @@ const ADMIN = [
 ];
 const PUBLIC = [
   /^\/login\.html$/, /^\/admin\.html$/, /^\/(styles|tienda)\.css$/, /^\/favicon\.ico$/, /^\/health$/,
-  /^\/api\/login$/, /^\/api\/admin\/(login|logout)$/,
+  /^\/api\/login$/, /^\/api\/admin\/(login|logout|demo)$/,
   /^\/chat(\.html|\.js)$/, /^\/api\/mensajes$/, /^\/api\/conversaciones\/\d+$/,
 ];
 

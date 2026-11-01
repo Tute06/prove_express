@@ -28,6 +28,11 @@ app.post('/api/admin/login', (req, res) => {
   auth.setAdminSession(res, usuario);
   res.json({ ok: true });
 });
+// Pista para el jurado en la pantalla de ingreso: solo si el .env lo habilita (la clave nunca está en el repo).
+app.get('/api/admin/demo', (req, res) => {
+  if (process.env.ADMIN_SHOW_DEMO !== '1' || !process.env.ADMIN_PASSWORD) return res.json({});
+  res.json({ usuario: process.env.ADMIN_USER || 'admin', clave: process.env.ADMIN_PASSWORD });
+});
 app.post('/api/admin/logout', (req, res) => {
   auth.clearAdminSession(res);
   res.json({ ok: true });
