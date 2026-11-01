@@ -9,7 +9,23 @@ El área de envíos a domicilio de un supermercado de barrio toma pedidos **a ma
 - Los clientes esperan una respuesta y se van.
 
 ## La solución
-Una **mesa de pedidos unificada** donde todo mensaje entra, queda registrado y se responde en segundos:
+Dos piezas que trabajan juntas:
+
+### 1. Tienda online exclusiva para socios (`/`)
+- **Login con DNI y número de socio.** Sin sesión no se ve ninguna página de la tienda.
+- **Inicio:** las ofertas, combos y promociones más recientes primero, el botón para administrar el perfil (email, celular, teléfono, dirección, foto) y el botón **"Presione aquí para iniciar su compra"**.
+- **Productos:**
+  - arriba, los **10 más vendidos** en grande;
+  - abajo, filas horizontales por **categoría**, cada una con **"Ver más"**;
+  - las categorías tienen **subcategorías** de profundidad libre (Almacén › Pastas secas › Fideos).
+- **Ofertas primero:** en cada categoría, en la búsqueda y en las sugerencias de la IA, los productos con oferta o promo aparecen primero, con el precio anterior tachado.
+- **IA en la compra:**
+  - **"Armá tu carrito con IA":** el socio escribe la lista como la mandaría por WhatsApp. La IA la convierte en productos del catálogo y marca lo que no encontró o no tiene stock, con un reemplazo propuesto. El socio revisa antes de agregar.
+  - **Búsqueda asistida:** si lo que busca no existe o no tiene stock, la IA sugiere productos semejantes con stock. Prioriza las ofertas de la misma categoría.
+- **Carrito y checkout:** zona, franja horaria, forma de pago, pedido mínimo y envío gratis. El pedido entra directo a la mesa de pedidos, sin anotar nada a mano.
+
+### 2. Mesa de pedidos unificada para el equipo de envíos (`/panel.html`)
+Todo mensaje entra, queda registrado y se responde en segundos:
 
 | Dolor | Qué hace Changuito |
 |---|---|
@@ -42,7 +58,8 @@ Node 22 + Express, HTML/JS sin build, persistencia en JSON (volumen de Docker), 
 cp .env.example .env   # completar OPENAI_API_KEY y HTTP_PORT
 ./deploy.sh            # docker compose up -d --build + chequeo de /health
 ```
-- Panel del operador: `http://<servidor>/`
+- Tienda de socios: `http://<servidor>/`. Socio de prueba: **DNI 30111222 · socio 1001**. También DNI 28333444 · socio 1002.
+- Panel del equipo de envíos: `http://<servidor>/panel.html`
 - Chat del cliente (WhatsApp simulado): `http://<servidor>/chat.html`
 
 ## Próximos pasos
