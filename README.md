@@ -2,7 +2,7 @@
 
 > Sistema de gestión y pedidos de compras a domicilio (repo `prove_express`).
 
-**Demo en vivo (Cloud Server de DonWeb):** http://201.32.132.186. Tienda de socios con DNI **30111222** y socio **1001**; panel de envíos en http://201.32.132.186/panel.html.
+**Demo en vivo (Cloud Server de DonWeb):** http://201.32.132.186 (tienda de socios) y http://201.32.132.186/admin.html (panel de envíos). Las credenciales de prueba se envían por correo al jurado.
 
 Hackatón DonWeb Day 2026, "Del problema al servidor".
 
@@ -62,8 +62,8 @@ Node 22 + Express, HTML/JS sin build, persistencia en JSON (volumen de Docker), 
 cp .env.example .env   # completar OPENAI_API_KEY y HTTP_PORT
 ./deploy.sh            # docker compose up -d --build + chequeo de /health
 ```
-- Tienda de socios: `http://<servidor>/`. Socio de prueba: **DNI 30111222 · socio 1001**. También DNI 28333444 · socio 1002.
-- Panel del equipo de envíos: `http://<servidor>/panel.html`
+- Tienda de socios: `http://<servidor>/`. Los socios de prueba están en `data/socios.json`.
+- Panel del equipo de envíos: `http://<servidor>/admin.html` (usuario y clave en el `.env`: `ADMIN_USER` / `ADMIN_PASSWORD`).
 - Chat del cliente (WhatsApp simulado): `http://<servidor>/chat.html`
 
 ## Próximos pasos
