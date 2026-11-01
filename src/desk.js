@@ -1,31 +1,24 @@
 // Mesa de pedidos: recibe mensajes de cualquier canal, los guarda SIEMPRE, consulta a la IA
 // y aplica el pedido estructurado validándolo contra el catálogo (precios y stock los calcula el servidor).
-const store = require('./store');
+const db = require('./db');
 const ai = require('./ai');
 const negocio = require('../data/negocio.json');
-const catalogo = require('../data/catalogo.json');
 const ofertas = require('./ofertas');
 
-const byId = new Map(catalogo.map((p) => [p.id, p]));
 const CANALES = ['whatsapp', 'telefono', 'web'];
 const ESTADOS_PEDIDO = ['borrador', 'confirmado', 'preparando', 'en_camino', 'entregado', 'cancelado'];
 const now = () => new Date().toISOString();
 
-function findConversation(id) {
-  return store.db.conversations.find((c) => c.id === Number(id));
-}
-function findOrder(id) {
-  return store.db.orders.find((o) => o.id === Number(id));
-}
+const findConversation = (id) => db.conversacion(id);
+const findOrder = (id) => db.pedido(id);
 
 function getOrCreateConversation({ conversationId, channel, name, phone }) {
-  const db = store.db;
   let conv = conversationId ? findConversation(conversationId) : null;
   // Mismo teléfono y canal con conversación abierta: se continúa ahí (evita pedidos duplicados).
-  if (!conv && phone) conv = db.conversations.find((c) => c.customer.phone === phone && c.channel === channel && c.status !== 'cerrada');
+  if (!conv && phone) conv = db.conversacionAbierta(phone, channel);
   if (!conv) {
     conv = {
-      id: store.nextId('conv'),
+      id: null,
       channel: CANALES.includes(channel) ? channel : 'web',
       customer: { name: name || null, phone: phone || null },
       messages: [],
@@ -41,14 +34,14 @@ function getOrCreateConversation({ conversationId, channel, name, phone }) {
       lastCustomerAt: null,
       firstReplyMs: null,
     };
-    db.conversations.push(conv);
+    db.crearConversacion(conv);
   }
   if (name && !conv.customer.name) conv.customer.name = name;
   return conv;
 }
 
 function addMessage(conv, from, text, extra = {}) {
-  const msg = { id: store.nextId('msg'), from, text, at: now(), ...extra };
+  const msg = { id: null, from, text, at: now(), ...extra };
   conv.messages.push(msg);
   conv.updatedAt = msg.at;
   if (from === 'cliente') {
@@ -66,9 +59,10 @@ function zoneCost(zone) {
 
 // Convierte la salida de la IA en ítems validados contra el catálogo.
 function buildItems(aiItems) {
+  const m = ofertas.mapas();
   return aiItems.map((it) => {
-    const prod = it.product_id ? byId.get(it.product_id) : null;
-    const alt = it.alternative_product_id ? byId.get(it.alternative_product_id) : null;
+    const prod = db.producto(it.product_id);
+    const alt = db.producto(it.alternative_product_id);
     const qty = Number(it.quantity) > 0 ? Number(it.quantity) : 1;
     let status = 'ok';
     if (!prod) status = it.product_id ? 'no_existe' : 'a_definir';
@@ -77,9 +71,9 @@ function buildItems(aiItems) {
       productId: prod ? prod.id : null,
       name: prod ? prod.nombre : null,
       unit: prod ? prod.unidad : null,
-      unitPrice: prod ? ofertas.precioFinal(prod) : 0,
+      unitPrice: prod ? ofertas.precioFinal(prod, m) : 0,
       quantity: qty,
-      subtotal: prod ? Math.round(ofertas.precioFinal(prod) * qty) : 0,
+      subtotal: prod ? Math.round(ofertas.precioFinal(prod, m) * qty) : 0,
       rawText: it.raw_text,
       note: it.note,
       status,
@@ -116,14 +110,13 @@ function setOrderStatus(order, status, by) {
 }
 
 function applyAiOrder(conv, out) {
-  const db = store.db;
   const o = out.order;
   let order = conv.orderId ? findOrder(conv.orderId) : null;
   if (!order && !o.items.length) return null; // consulta sin pedido
   const editable = !order || order.status === 'borrador';
   if (!order) {
     order = {
-      id: store.nextId('order'),
+      id: null,
       number: null,
       conversationId: conv.id,
       channel: conv.channel,
@@ -133,8 +126,7 @@ function applyAiOrder(conv, out) {
       history: [{ status: 'borrador', at: now(), by: 'ia' }],
       createdAt: now(),
     };
-    order.number = `P-${String(order.id).padStart(4, '0')}`;
-    db.orders.push(order);
+    db.crearPedido(order);
     conv.orderId = order.id;
   }
   if (editable) {
@@ -155,6 +147,7 @@ function applyAiOrder(conv, out) {
     computeTotals(order);
     if (out.intent === 'cancelacion') setOrderStatus(order, 'cancelado', 'ia');
     else if (out.customer_confirmed && order.problems.length === 0) setOrderStatus(order, 'confirmado', 'ia');
+    db.guardarPedido(order);
   }
   return order;
 }
@@ -163,7 +156,7 @@ function applyAiOrder(conv, out) {
 async function receive({ conversationId, channel, name, phone, text }) {
   const conv = getOrCreateConversation({ conversationId, channel, name, phone });
   addMessage(conv, 'cliente', text);
-  store.save(); // el mensaje queda guardado antes de llamar a la IA: no se pierde aunque falle
+  db.guardarConversacion(conv); // el mensaje queda guardado antes de llamar a la IA: no se pierde aunque falle
 
   try {
     const order = conv.orderId ? findOrder(conv.orderId) : null;
@@ -189,7 +182,7 @@ async function receive({ conversationId, channel, name, phone, text }) {
       addMessage(conv, 'bot', '¡Hola! Recibimos tu mensaje 🙌 En un ratito te responde una persona del equipo de envíos.', { fallback: true });
     }
   }
-  store.save();
+  db.guardarConversacion(conv);
   return conv;
 }
 
@@ -197,7 +190,7 @@ function operatorReply(conv, text) {
   addMessage(conv, 'operador', text);
   conv.status = 'respondida';
   conv.needsHumanReason = null;
-  store.save();
+  db.guardarConversacion(conv);
 }
 
 module.exports = {

@@ -7,4 +7,4 @@ COPY . .
 RUN mkdir -p /data && chown node:node /data
 USER node
 EXPOSE 3000
-CMD ["node", "src/server.js"]
+CMD ["node", "--disable-warning=ExperimentalWarning", "src/server.js"]

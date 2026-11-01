@@ -1,10 +1,9 @@
 const path = require('path');
 const express = require('express');
-const store = require('./store');
+const db = require('./db');
 const desk = require('./desk');
 const ai = require('./ai');
 const negocio = require('../data/negocio.json');
-const catalogo = require('../data/catalogo.json');
 const ejemplos = require('../data/ejemplos.json');
 const auth = require('./auth');
 const shop = require('./shop');
@@ -38,7 +37,7 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/api/negocio', (req, res) => res.json(negocio));
-app.get('/api/catalogo', (req, res) => res.json(catalogo));
+app.get('/api/catalogo', (req, res) => res.json(db.productos()));
 
 // Entrada de mensajes: chat del cliente (WhatsApp simulado / web) o carga del operador (pegar WhatsApp, notas de llamada).
 app.post('/api/mensajes', aiLimiter, async (req, res) => {
@@ -55,7 +54,7 @@ app.post('/api/mensajes', aiLimiter, async (req, res) => {
 });
 
 app.get('/api/conversaciones', (req, res) => {
-  res.json(store.db.conversations.map(viewConversation).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)));
+  res.json(db.conversaciones().map(viewConversation).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)));
 });
 
 app.get('/api/conversaciones/:id', (req, res) => {
@@ -76,12 +75,12 @@ app.post('/api/conversaciones/:id/cerrar', (req, res) => {
   const conv = desk.findConversation(req.params.id);
   if (!conv) return res.status(404).json({ error: 'No existe' });
   conv.status = 'cerrada';
-  store.save();
+  db.guardarConversacion(conv);
   res.json(viewConversation(conv));
 });
 
 app.get('/api/pedidos', (req, res) => {
-  res.json([...store.db.orders].sort((a, b) => b.id - a.id));
+  res.json(db.pedidos());
 });
 
 app.patch('/api/pedidos/:id', (req, res) => {
@@ -92,13 +91,13 @@ app.patch('/api/pedidos/:id', (req, res) => {
     return res.status(409).json({ error: `No se puede confirmar: ${order.problems.join(', ')}` });
   }
   desk.setOrderStatus(order, status, 'operador');
-  store.save();
+  db.guardarPedido(order);
   res.json(order);
 });
 
 app.get('/api/metricas', (req, res) => {
-  const convs = store.db.conversations;
-  const orders = store.db.orders;
+  const convs = db.conversaciones();
+  const orders = db.pedidos();
   const msgsCliente = convs.reduce((s, c) => s + c.messages.filter((m) => m.from === 'cliente').length, 0);
   const respIA = convs.reduce((s, c) => s + c.messages.filter((m) => m.from === 'bot' && !m.fallback).length, 0);
   const tiempos = convs.map((c) => c.firstReplyMs).filter((x) => x != null);
@@ -119,7 +118,7 @@ app.get('/api/ejemplos', (req, res) => res.json(ejemplos));
 
 app.post('/api/demo/reset', (req, res) => {
   if (process.env.ALLOW_RESET !== '1') return res.status(403).json({ error: 'Deshabilitado' });
-  store.reset();
+  db.reset();
   res.json({ ok: true });
 });
 

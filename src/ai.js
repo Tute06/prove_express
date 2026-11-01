@@ -4,7 +4,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const negocio = require('../data/negocio.json');
-const catalogo = require('../data/catalogo.json');
+const db = require('./db');
 const ofertas = require('./ofertas');
 const promptBase = fs.readFileSync(path.join(ROOT, 'prompts', 'agente.md'), 'utf8');
 
@@ -60,11 +60,13 @@ const SCHEMA = {
   },
 };
 
+// Catálogo leído de la base en cada llamada (stock y ofertas al día).
 function catalogoTexto() {
-  return catalogo
+  const m = ofertas.mapas();
+  return db.productos()
     .map((p) => {
-      const o = ofertas.oferta.get(p.id);
-      const promo = ofertas.enPromo.get(p.id);
+      const o = m.oferta.get(p.id);
+      const promo = m.enPromo.get(p.id);
       const precio = o ? `OFERTA $${o.precio} (antes $${o.antes})` : `$${p.precio}`;
       return `${p.id} | ${p.nombre} | ${precio} por ${p.unidad} | stock ${p.stock}${promo ? ` | en promo: ${promo.join(', ')}` : ''}`;
     })
@@ -185,7 +187,7 @@ const SCHEMA_SIMILARES = {
         type: 'object',
         additionalProperties: false,
         required: ['product_id', 'motivo'],
-        properties: { product_id: { type: 'string', enum: catalogo.map((p) => p.id) }, motivo: { type: 'string' } },
+        properties: { product_id: { type: 'string', enum: db.productos().map((p) => p.id) }, motivo: { type: 'string' } },
       },
     },
   },
