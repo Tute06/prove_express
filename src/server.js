@@ -16,6 +16,7 @@ app.use(auth.guard);
 const json50 = express.json({ limit: '50kb' });
 app.use((req, res, next) => (req.path === '/api/me' ? next() : json50(req, res, next)));
 app.use(shop);
+app.get('/favicon.ico', (req, res) => res.type('image/svg+xml').send('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🛒</text></svg>'));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Límite de llamadas a la IA por IP (la key es compartida).

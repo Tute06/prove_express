@@ -47,7 +47,7 @@
           try {
             const s = await api('/api/ia/similares', { method: 'POST', body: { q: $('#q').value.trim(), sinStock: r.map((p) => p.id) } });
             if (ultima !== q || !$('#sim')) return;
-            $('#sim').innerHTML = `<h3>✨ Te sugerimos estos productos</h3><div class="summary">🤖 ${esc(s.reply)} <small>(${(s.meta.ms / 1000).toFixed(1)} s)</small></div>
+            $('#sim').innerHTML = `<h3>✨ Te sugerimos estos productos</h3><div class="summary">🤖 ${esc(s.reply)} <small>${s.meta.fallback ? '' : `(${(s.meta.ms / 1000).toFixed(1)} s)`}</small></div>
               <div class="row-scroll">${s.items.map((p) => prodCard(p, `<small class="pill info" style="align-self:flex-start;white-space:normal">${esc(p.motivo)}</small>`)).join('') || '<small>Nada parecido en el catálogo. Probá con otra palabra.</small>'}</div>`;
           } catch (err) {
             if ($('#sim')) $('#sim').innerHTML = `<small class="err">${esc(err.message)}</small>`;

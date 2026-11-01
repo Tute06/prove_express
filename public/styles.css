@@ -150,3 +150,7 @@ h2.sec a { font-size: .9rem; margin-left: auto; font-weight: 600; }
 .form2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
 @media (max-width: 600px) { .form2 { grid-template-columns: 1fr; } }
 label { font-size: .85rem; color: var(--muted); display: grid; gap: .25rem; }
+@media (max-width: 600px) {
+  .top10, .gridp { grid-template-columns: 1fr 1fr; }
+  .top10 .prod .ph { height: 110px; font-size: 3.2rem; }
+}

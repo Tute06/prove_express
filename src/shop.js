@@ -231,9 +231,25 @@ router.post('/api/ia/similares', express.json(), async (req, res) => {
     items.push(...extra.slice(0, 2).map((p) => ({ ...p, motivo: 'en oferta en la misma categoría' })));
     res.json({ reply: out.reply, items, meta: out._meta });
   } catch (err) {
-    console.error('[ia/similares]', err.message);
-    res.status(503).json({ error: 'El asistente no está disponible ahora.' });
+    // Sin IA: sugerencias del catálogo por subcategoría o por palabras parecidas, ofertas primero.
+    console.error('[ia/similares] uso alternativa local:', err.message);
+    res.json({ reply: 'El asistente de IA no está disponible; te mostramos productos parecidos del catálogo.', items: similaresLocal(q, req.body.sinStock), meta: { fallback: true } });
   }
 });
+
+const norm = (t) => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+function similaresLocal(q, sinStock) {
+  const ids = Array.isArray(sinStock) ? sinStock : [];
+  const rutas = ids.map((id) => byId.get(id)).filter(Boolean).map((p) => p.ruta.slice(0, 2).join('/'));
+  const raices = norm(q).split(/\s+/).filter((w) => w.length >= 3).map((w) => w.slice(0, 4));
+  const disponibles = catalogoVista.filter((p) => p.stock > 0 && !ids.includes(p.id));
+  const mismaCat = disponibles.filter((p) => rutas.includes(p.ruta.slice(0, 2).join('/')));
+  // Si hay de la misma subcategoría, alcanza; si no, se busca por palabras parecidas.
+  const porNombre = mismaCat.length ? [] : disponibles.filter((p) => raices.some((r) => norm(p.nombre + ' ' + p.ruta.join(' ')).includes(r)));
+  return [
+    ...mismaCat.map((p) => ({ ...p, motivo: p.descuento ? 'en oferta, misma categoría' : 'misma categoría' })),
+    ...porNombre.map((p) => ({ ...p, motivo: p.descuento ? 'en oferta, nombre parecido' : 'nombre parecido' })),
+  ].slice(0, 6);
+}
 
 module.exports = router;
