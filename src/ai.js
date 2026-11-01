@@ -9,7 +9,7 @@ const ofertas = require('./ofertas');
 const promptBase = fs.readFileSync(path.join(ROOT, 'prompts', 'agente.md'), 'utf8');
 
 const API_KEY = process.env.OPENAI_API_KEY || '';
-const MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+const MODEL = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
 const TIMEOUT_MS = Number(process.env.OPENAI_TIMEOUT_MS || 30000);
 
 const FALTANTES = ['items', 'direccion', 'zona', 'franja_horaria', 'forma_pago', 'nombre'];
@@ -198,7 +198,8 @@ async function similares(query, sinStock) {
   const started = Date.now();
   const system = [
     `Sos el asistente de compras de la tienda online para socios de ${negocio.nombre}. El socio buscó algo que no encontró o que no tiene stock.`,
-    'Proponé hasta 6 productos del CATÁLOGO **con stock mayor a 0** que puedan reemplazar o se parezcan a lo buscado (misma función, misma categoría, otra marca o presentación).',
+    'Proponé de 0 a 5 productos del CATÁLOGO **con stock mayor a 0** que REEMPLACEN lo buscado: misma función y mismo tipo de producto (otra marca, otro tamaño o variedad). Mejor 1 o 2 buenos que 5 flojos.',
+    'NO incluyas complementos ni productos de otra función (para "yerba" no sirven azúcar ni café; para "lavandina" no sirve detergente salvo que no haya nada mejor). Si nada del catálogo reemplaza lo buscado, devolvé `items` vacío.',
     'Orden: primero los que estén en OFERTA o en promo y sirvan como reemplazo dentro de la misma categoría; después el resto, del más parecido al menos parecido. Si sugerís una oferta, mencionalo en el motivo (ej. "en oferta, otra marca").',
     'Interpretá errores de tipeo y nombres coloquiales (ej. "coca" = Coca-Cola, "lavandina" = Ayudín, "fideos" = cualquier pasta seca).',
     'Si nada del catálogo sirve, devolvé `items` vacío y decilo.',
