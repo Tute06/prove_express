@@ -159,6 +159,22 @@ function applyAiOrder(conv, out) {
   return order;
 }
 
+// Descuento por forma de pago en la respuesta (calculado por el servidor, no por la IA):
+// si no eligió un medio con descuento, se avisa una vez cuánto ahorra; si lo eligió, se confirma el total.
+function conDescuento(conv, order, reply) {
+  const tabla = negocio.descuentos_pago || {};
+  const [medio, mejor] = Object.entries(tabla).sort((a, b) => b[1] - a[1])[0] || [];
+  if (!order || !order.subtotal || !mejor || order.status === 'cancelado') return reply;
+  const yaDicho = (texto) => /descuento|% off/i.test(texto);
+  const fmt = (n) => '$' + Math.round(n).toLocaleString('es-AR');
+  if (order.paymentDiscount > 0) {
+    if (conv.messages.some((m) => m.from === 'bot' && m.text.includes('off aplicado'))) return reply;
+    return `${reply} ✅ ${order.paymentDiscountPct}% off aplicado por pagar en ${order.paymentMethod}: −${fmt(order.paymentDiscount)}, total ${fmt(order.total)}${order.shippingCost ? ' con envío' : ''}.`;
+  }
+  if (yaDicho(reply) || conv.messages.some((m) => m.from === 'bot' && yaDicho(m.text))) return reply;
+  return `${reply} 💡 Pagando en ${medio} tenés ${mejor}% de descuento: ahorrás ${fmt(order.subtotal * mejor / 100)}.`;
+}
+
 // Punto de entrada único para todos los canales.
 async function receive({ conversationId, channel, name, phone, text }) {
   const conv = getOrCreateConversation({ conversationId, channel, name, phone });
@@ -177,7 +193,7 @@ async function receive({ conversationId, channel, name, phone, text }) {
     const lockedChange = updated && updated.status !== 'borrador' && ['modificacion', 'cancelacion'].includes(out.intent);
     conv.needsHumanReason = out.needs_human ? out.needs_human_reason || 'la IA pidió un humano' : lockedChange ? 'cambio sobre pedido ya confirmado' : null;
     const sugerida = conv.channel === 'telefono';
-    addMessage(conv, 'bot', out.reply, { suggested: sugerida, meta: out._meta });
+    addMessage(conv, 'bot', conDescuento(conv, updated, out.reply), { suggested: sugerida, meta: out._meta });
     conv.status = conv.needsHumanReason ? 'requiere_humano' : sugerida ? 'respuesta_sugerida' : 'respondida';
   } catch (err) {
     console.error('[desk] fallo IA:', err.message);
