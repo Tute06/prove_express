@@ -37,7 +37,7 @@ async function header({ search = true } = {}) {
   const av = me.foto ? `<img class="avatar" src="${me.foto}" alt="">` : `<span class="avatar">${esc(me.nombre[0])}</span>`;
   document.body.insertAdjacentHTML('afterbegin', `
     <header class="nav">
-      <a class="logo" href="/"><span class="logo-mark">PE</span><span>Provee Express<small>Club de socios</small></span></a>
+      <a class="logo" href="/"><span class="logo-mark" title="Provee Express"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 3.5h2.4l2.3 11a1.7 1.7 0 0 0 1.7 1.4h8.4a1.7 1.7 0 0 0 1.7-1.3l1.6-7.1H6"/><circle cx="9.6" cy="20" r="1.5"/><circle cx="17.2" cy="20" r="1.5"/></svg></span><span>Provee Express<small>Club de socios</small></span></a>
       ${search ? `<form class="nav-search" action="/productos.html"><input name="q" placeholder="Buscá leche, yerba, detergente…" autocomplete="off"></form>` : '<div style="flex:1"></div>'}
       <nav class="nav-links">
         <a class="hide-sm" href="/productos.html">Productos</a>
