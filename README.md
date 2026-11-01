@@ -2,7 +2,7 @@
 
 > Sistema de gestión y pedidos de compras a domicilio (repo `prove_express`).
 
-**Demo en vivo (Cloud Server de DonWeb):** http://201.32.132.186 (tienda de socios) y http://201.32.132.186/admin.html (panel de envíos). Dominio: http://dwday-114794992.online (configurado; puede tardar en propagarse). Las credenciales de prueba se envían por correo al jurado.
+**Demo en vivo (Cloud Server de DonWeb):** http://dwday-114794992.online (tienda de socios) y http://dwday-114794992.online/admin.html (panel de envíos). Si el dominio todavía no propagó, como último recurso: http://201.32.132.186. Las credenciales de prueba se envían por correo al jurado.
 
 Hackatón DonWeb Day 2026, "Del problema al servidor".
 
