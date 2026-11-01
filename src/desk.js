@@ -65,7 +65,9 @@ function buildItems(aiItems) {
     // El reemplazo propuesto tiene que existir, ser distinto y tener stock.
     const altP = it.alternative_product_id !== it.product_id ? db.producto(it.alternative_product_id) : null;
     const alt = altP && altP.stock > 0 ? altP : null;
-    const qty = Number(it.quantity) > 0 ? Number(it.quantity) : 1;
+    let qty = Number(it.quantity) > 0 ? Number(it.quantity) : 1;
+    // Lo que se vende por unidad no admite fracciones ("media docena" de un maple x 30 = 1 maple).
+    if (prod && prod.unidad !== 'kg') qty = Math.max(1, Math.ceil(qty));
     let status = 'ok';
     if (!prod) status = it.product_id ? 'no_existe' : 'a_definir';
     else if (prod.stock <= 0 || prod.stock < qty) status = 'sin_stock';

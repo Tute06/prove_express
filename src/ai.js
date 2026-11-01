@@ -68,7 +68,8 @@ function catalogoTexto() {
       const o = m.oferta.get(p.id);
       const promo = m.enPromo.get(p.id);
       const precio = o ? `OFERTA $${o.precio} (antes $${o.antes})` : `$${p.precio}`;
-      return `${p.id} | ${p.nombre} | ${precio} por ${p.unidad} | stock ${p.stock}${promo ? ` | en promo: ${promo.join(', ')}` : ''}`;
+      const stock = p.stock > 0 ? `stock ${p.stock}` : 'SIN STOCK (no lo menciones ni lo ofrezcas salvo que el cliente lo pida por nombre)';
+      return `${p.id} | ${p.nombre} | ${precio} por ${p.unidad} | ${stock}${promo ? ` | en promo: ${promo.join(', ')}` : ''}`;
     })
     .join('\n');
 }
