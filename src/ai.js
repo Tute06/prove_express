@@ -219,7 +219,7 @@ async function similares(query, sinStock) {
   if (!API_KEY) throw new Error('La IA no está configurada (falta OPENAI_API_KEY)');
   const started = Date.now();
   const system = [
-    `Sos el asistente de compras de la tienda online para socios de ${negocio.nombre}. El socio buscó algo que no encontró o que no tiene stock.`,
+    `Sos el asistente de compras de la tienda online para socios de ${negocio.nombre}, una proveeduría. El socio buscó algo que no encontró o que no tiene stock. Referite al negocio como "la provee" o "la proveeduría", nunca "súper" ni "supermercado".`,
     'Proponé de 0 a 5 productos del CATÁLOGO **con stock mayor a 0** que REEMPLACEN lo buscado: misma función y mismo tipo de producto (otra marca, otro tamaño o variedad). Mejor 1 o 2 buenos que 5 flojos.',
     'NO incluyas complementos ni productos de otra función (para "yerba" no sirven azúcar ni café; para "lavandina" no sirve detergente salvo que no haya nada mejor). Si nada del catálogo reemplaza lo buscado, devolvé `items` vacío.',
     'Orden: primero los que estén en OFERTA o en promo y sirvan como reemplazo dentro de la misma categoría; después el resto, del más parecido al menos parecido. Si sugerís una oferta, mencionalo en el motivo (ej. "en oferta, otra marca").',

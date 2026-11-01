@@ -5,7 +5,7 @@
 Hackatón DonWeb Day 2026, "Del problema al servidor".
 
 ## El problema
-El área de envíos a domicilio de un supermercado de barrio toma pedidos **a mano**, por **WhatsApp** y por **teléfono**:
+El área de envíos a domicilio de una proveeduría de barrio toma pedidos **a mano**, por **WhatsApp** y por **teléfono**:
 - Entre tanto trabajo hay mensajes que se pierden.
 - Los pedidos se anotan mal (productos ambiguos, cantidades, sin stock, faltan la dirección o el horario).
 - Los clientes esperan una respuesta y se van.

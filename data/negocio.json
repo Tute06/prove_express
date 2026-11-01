@@ -1,5 +1,6 @@
 {
-  "nombre": "Provee Express (supermercado ficticio)",
+  "nombre": "Provee Express",
+  "rubro": "proveeduría de barrio para socios (negocio ficticio de demostración)",
   "ciudad": "Rosario",
   "horario_atencion": "Lunes a sábado de 8 a 21 h. Domingos de 9 a 13 h.",
   "pedido_minimo": 15000,

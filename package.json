@@ -2,7 +2,7 @@
   "name": "changuito",
   "version": "0.1.0",
   "private": true,
-  "description": "Mesa de pedidos con IA para el reparto a domicilio de un supermercado",
+  "description": "Mesa de pedidos con IA para el reparto a domicilio de una proveeduría",
   "main": "src/server.js",
   "type": "commonjs",
   "scripts": {
