@@ -2,50 +2,67 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inicio · La Esquina Socios</title>
+  <title>Inicio · Provee Express</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tienda.css">
 </head>
 <body class="shop">
   <main class="wrap">
-    <section class="hero">
-      <div>
-        <h2 id="hola">¡Hola!</h2>
-        <div>Tus compras del súper, con envío a domicilio y precios de socio.</div>
+    <section class="bento">
+      <div class="tile tile-hero">
+        <span class="float" style="right:6%;top:10%">🛒</span>
+        <span class="float" style="right:26%;top:30%;font-size:3rem">🥖</span>
+        <span class="float" style="right:8%;top:48%;font-size:3.4rem">🧉</span>
+        <span class="eyebrow" style="color:var(--accent)" id="hola">Hola</span>
+        <h1>El súper de tu barrio, <em>en tu puerta.</em></h1>
+        <p>Precios de socio, ofertas nuevas todas las semanas y envío a domicilio en el día.</p>
+        <a class="cta" href="/productos.html">Presione aquí para iniciar su compra <span>→</span></a>
       </div>
-      <div class="spacer"></div>
-      <a class="btn-light" href="/perfil.html">👤 Administrar mi perfil</a>
-      <a class="cta" href="/productos.html">🛍️ Presione aquí para iniciar su compra</a>
+      <div class="tile tile-me" id="me"></div>
+      <div class="tile tile-stat">
+        <span class="eyebrow" style="color:var(--accent-ink)">Este fin de semana</span>
+        <b>Envío gratis</b>
+        <span>en compras desde $60.000 · pedidos antes de las 17 h llegan hoy</span>
+      </div>
     </section>
+
     <div id="ia"></div>
-    <h2 class="sec">🔥 Ofertas, combos y promociones <small style="color:var(--muted);font-weight:400">las más nuevas primero</small></h2>
+
+    <h2 class="sec">Ofertas, combos y promociones <small>las más nuevas primero</small></h2>
     <div class="promos" id="promos"></div>
-    <h2 class="sec" id="misPedT" style="display:none">📦 Mis pedidos</h2>
+
+    <h2 class="sec" id="misPedT" style="display:none">Mis pedidos</h2>
     <div id="misPed"></div>
   </main>
   <script src="tienda.js"></script>
   <script>
-    const TIPO = { oferta: ['Oferta', 'danger'], combo: ['Combo', 'info'], promo: ['Promo', 'warn'] };
+    const TIPO = { oferta: ['Oferta', 'oferta'], combo: ['Combo', 'combo'], promo: ['Promo', 'promo-t'] };
     const EST = { borrador: 'En revisión', confirmado: 'Confirmado', preparando: 'Preparando', en_camino: 'En camino 🛵', entregado: 'Entregado ✔', cancelado: 'Cancelado' };
     (async () => {
       const me = await header();
-      $('#hola').textContent = `¡Hola, ${me.nombre.split(' ')[0]}!`;
+      $('#hola').textContent = `Hola, ${me.nombre.split(' ')[0]} 👋`;
+      const av = me.foto ? `<img class="avatar" src="${me.foto}" alt="">` : `<span class="avatar">${esc(me.nombre[0])}</span>`;
+      const falta = ['email', 'celular', 'direccion'].filter((k) => !me[k]).length;
+      $('#me').innerHTML = `${av}<div><span class="eyebrow">Socio N° ${esc(me.socio)}</span><div style="font-weight:800;font-size:1.15rem">${esc(me.nombre)}</div>
+        <small style="color:var(--muted)">${falta ? `Te faltan ${falta} datos de contacto` : 'Perfil completo ✔'}</small></div>
+        <a class="btn-out" href="/perfil.html">Administrar perfil</a>`;
       iaBox($('#ia'));
       const promos = await api('/api/promos');
       $('#promos').innerHTML = promos.map((p) => {
         const [t, c] = TIPO[p.tipo];
         const nuevo = Date.now() - Date.parse(p.creada) < 36 * 3600 * 1000;
-        return `<div class="promo"><div class="em">${p.emoji}</div>
-          <div><span class="pill ${c} tipo">${t}</span> ${nuevo ? '<span class="pill">Nuevo</span>' : ''}</div>
-          <b>${esc(p.titulo)}</b><small>${esc(p.detalle)}</small>
+        return `<div class="promo ${c}"><span class="em">${p.emoji}</span>
+          <span class="tipo">${t}</span>${nuevo ? '<span class="nuevo">● Nuevo</span>' : ''}
+          <b class="t">${esc(p.titulo)}</b><small>${esc(p.detalle)}</small>
           ${p.precio != null ? `<div class="precio">${money(p.precio)}<span class="antes">${money(p.precio_antes)}</span></div>
           <button class="small" data-addpromo="${p.id}">Agregar al carrito</button>` : ''}</div>`;
       }).join('');
       const peds = await api('/api/mis-pedidos');
       if (peds.length) {
         $('#misPedT').style.display = '';
-        $('#misPed').innerHTML = peds.map((o) => `<div class="card" style="margin-bottom:.4rem;display:flex;gap:1rem;flex-wrap:wrap">
-          <b>${o.number}</b><span>${new Date(o.createdAt).toLocaleString('es-AR')}</span><span>${o.items.length} ítems</span><b>${money(o.total)}</b>
-          <span class="pill">${EST[o.status] || o.status}</span></div>`).join('');
+        $('#misPed').innerHTML = peds.map((o) => `<div class="order-card">
+          <b>${o.number}</b><span style="color:var(--muted)">${new Date(o.createdAt).toLocaleString('es-AR')}</span><span>${o.items.length} ítems</span>
+          <b>${money(o.total)}</b><span class="pill" style="margin-left:auto">${EST[o.status] || o.status}</span></div>`).join('');
       }
     })();
   </script>

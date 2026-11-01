@@ -2,34 +2,39 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Productos · La Esquina Socios</title>
+  <title>Productos · Provee Express</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tienda.css">
 </head>
 <body class="shop">
   <main class="wrap">
-    <input id="q" placeholder="🔎 Buscar productos…" style="font-size:1.05rem;padding:.7rem">
+    <div class="searchbig"><input id="q" placeholder="¿Qué estás buscando? Leche, yerba, detergente…" autocomplete="off"></div>
     <div id="buscar"></div>
-    <div id="ia"></div>
-    <h2 class="sec">🏆 Los 10 más vendidos</h2>
+    <h2 class="sec" style="margin-top:1.4rem">Categorías</h2>
+    <nav class="catnav" id="catnav"></nav>
+    <h2 class="sec">Top 10 más vendidos <small>lo que más llevan los socios</small></h2>
     <div class="top10" id="top"></div>
+    <div id="ia"></div>
     <div id="cats"></div>
   </main>
   <script src="tienda.js"></script>
   <script>
     (async () => {
-      await header();
+      await header({ search: false });
       iaBox($('#ia'));
       const prods = await api('/api/productos');
       const top = [...prods].sort((a, b) => b.ventas - a.ventas).slice(0, 10);
-      $('#top').innerHTML = top.map((p, i) => prodCard(p, `<span class="rank">#${i + 1}</span>`)).join('');
+      $('#top').innerHTML = top.map((p, i) => `<div class="top-item"><span class="rank">${i + 1}</span>${prodCard(p)}</div>`).join('');
       const cats = [...new Set(prods.map((p) => p.ruta[0]))];
+      $('#catnav').innerHTML = cats.map((c) => `<a href="#cat-${encodeURIComponent(c)}"><span style="--tint:${tint(c)}">${CAT_EMOJI[c] || '🛒'}</span>${esc(c)}</a>`).join('');
       $('#cats').innerHTML = cats.map((c) => {
         const ps = prods.filter((p) => p.ruta[0] === c).sort((a, b) => b.prioridad - a.prioridad || b.ventas - a.ventas);
-        return `<h2 class="sec">${esc(c)} <small style="color:var(--muted);font-weight:400">${ps.length} productos</small>
-          <a href="/categoria.html?ruta=${enc([c])}">Ver más →</a></h2>
+        return `<h2 class="sec" id="cat-${encodeURIComponent(c)}">${CAT_EMOJI[c] || ''} ${esc(c)} <small>${ps.length} productos</small>
+          <a class="more" href="/categoria.html?ruta=${enc([c])}">Ver más →</a></h2>
           <div class="row-scroll">${ps.slice(0, 12).map((p) => prodCard(p)).join('')}</div>`;
       }).join('');
-      const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+      const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
       let timer, ultima = '';
       $('#q').oninput = () => {
         const q = norm($('#q').value.trim());
@@ -37,9 +42,9 @@
         if (q.length < 2) return ($('#buscar').innerHTML = '');
         const r = prods.filter((p) => q.split(/\s+/).every((w) => norm(p.nombre + ' ' + p.ruta.join(' ')).includes(w))).sort((a, b) => (b.stock > 0) - (a.stock > 0) || b.prioridad - a.prioridad || b.ventas - a.ventas);
         const conStock = r.filter((p) => p.stock > 0);
-        $('#buscar').innerHTML = `<h2 class="sec">Resultados (${r.length})</h2>
+        $('#buscar').innerHTML = `<h2 class="sec">Resultados <small>${r.length} para “${esc($('#q').value.trim())}”</small></h2>
           <div class="gridp">${r.map((p) => prodCard(p)).join('')}</div>
-          ${r.length && conStock.length ? '' : `<div class="ia-box" id="sim"><h3>✨ ${r.length ? 'Lo que buscás no tiene stock' : 'No encontramos “' + esc($('#q').value.trim()) + '”'}</h3><small>Buscando productos semejantes con IA…</small></div>`}`;
+          ${r.length && conStock.length ? '' : `<div class="ia-box" id="sim"><span class="eyebrow" style="color:var(--accent)">Asistente con IA</span><h3><span class="spark">✦</span> ${r.length ? 'Lo que buscás no tiene stock' : 'No encontramos “' + esc($('#q').value.trim()) + '”'}</h3><small>Buscando productos semejantes…</small></div>`}`;
         if (r.length && conStock.length) return;
         // Pausa antes de llamar a la IA para no consultarla en cada tecla.
         timer = setTimeout(async () => {
@@ -47,13 +52,16 @@
           try {
             const s = await api('/api/ia/similares', { method: 'POST', body: { q: $('#q').value.trim(), sinStock: r.map((p) => p.id) } });
             if (ultima !== q || !$('#sim')) return;
-            $('#sim').innerHTML = `<h3>✨ Te sugerimos estos productos</h3><div class="summary">🤖 ${esc(s.reply)} <small>${s.meta.fallback ? '' : `(${(s.meta.ms / 1000).toFixed(1)} s)`}</small></div>
-              <div class="row-scroll">${s.items.map((p) => prodCard(p, `<small class="pill info" style="align-self:flex-start;white-space:normal">${esc(p.motivo)}</small>`)).join('') || '<small>Nada parecido en el catálogo. Probá con otra palabra.</small>'}</div>`;
+            $('#sim').innerHTML = `<span class="eyebrow" style="color:var(--accent)">Asistente con IA</span><h3><span class="spark">✦</span> Te sugerimos estos productos</h3>
+              <div class="summary">${esc(s.reply)} <small>${s.meta.fallback ? '' : `(${(s.meta.ms / 1000).toFixed(1)} s)`}</small></div>
+              <div class="row-scroll">${s.items.map((p) => prodCard(p, `<span class="why">${esc(p.motivo)}</span>`)).join('') || '<small>Nada parecido en el catálogo. Probá con otra palabra.</small>'}</div>`;
           } catch (err) {
             if ($('#sim')) $('#sim').innerHTML = `<small class="err">${esc(err.message)}</small>`;
           }
         }, 900);
       };
+      const q0 = new URLSearchParams(location.search).get('q');
+      if (q0) { $('#q').value = q0; $('#q').oninput(); }
     })();
   </script>
 </body>

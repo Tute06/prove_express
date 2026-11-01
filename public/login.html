@@ -2,23 +2,39 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ingreso socios · La Esquina</title>
+  <title>Ingreso socios · Provee Express</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tienda.css">
 </head>
-<body>
-  <div class="login-wrap">
-    <form class="login" id="f">
-      <div style="font-size:2.5rem">🛒</div>
-      <h1>Tienda online para socios</h1>
-      <small style="color:var(--muted)">Supermercado La Esquina · compras con envío a domicilio. Acceso exclusivo para socios.</small>
-      <label>Número de documento <input name="dni" inputmode="numeric" autocomplete="username" required></label>
-      <label>Número de socio <input name="socio" inputmode="numeric" type="password" autocomplete="current-password" required></label>
-      <div class="err" id="err"></div>
-      <button>Ingresar</button>
-      <small style="color:var(--muted)">Demo: DNI <b>30111222</b> · socio <b>1001</b></small>
-    </form>
-  </div>
+<body class="shop">
+  <main class="login-split">
+    <section class="login-brand">
+      <a class="logo" style="color:#fff !important"><span class="logo-mark" style="background:var(--accent);color:var(--navy)">PE</span><span>Provee Express<small style="color:#9fb3d1">Club de socios</small></span></a>
+      <span class="float" style="right:10%;top:18%">🛒</span>
+      <span class="float" style="right:32%;top:38%;font-size:3.2rem">🥛</span>
+      <span class="float" style="right:12%;top:55%;font-size:3.8rem">🍝</span>
+      <div>
+        <h1>Tu súper, <em>sin filas</em> ni llamadas.</h1>
+        <p style="opacity:.8;max-width:40ch">Comprá online con precios de socio y recibí tu pedido en casa. Escribí tu lista como en WhatsApp y nuestra IA arma el carrito.</p>
+      </div>
+    </section>
+    <section class="login-form">
+      <form id="f">
+        <span class="eyebrow">Acceso exclusivo para socios</span>
+        <h2>Ingresá a tu cuenta</h2>
+        <label>Número de documento <input name="dni" inputmode="numeric" autocomplete="username" placeholder="Sin puntos" required></label>
+        <label>Número de socio <input name="socio" inputmode="numeric" type="password" autocomplete="current-password" required></label>
+        <div class="err" id="err"></div>
+        <button class="btn-main">Ingresar</button>
+        <div class="demo">Demo para el jurado: DNI <b>30111222</b> · socio <b>1001</b></div>
+      </form>
+    </section>
+  </main>
+  <footer class="foot"><span></span><span class="brand">Provee Express · 2026</span><span id="clock"></span></footer>
   <script>
+    const clock = document.getElementById('clock');
+    const tick = () => { clock.textContent = new Date().toLocaleString('es-AR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }); };
+    tick(); setInterval(tick, 1000);
     document.getElementById('f').onsubmit = async (e) => {
       e.preventDefault();
       const f = e.target;

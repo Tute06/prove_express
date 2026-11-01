@@ -2,27 +2,30 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Carrito · La Esquina Socios</title>
+  <title>Carrito · Provee Express</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tienda.css">
 </head>
 <body class="shop">
-  <main class="wrap" style="max-width:900px">
-    <h2 class="sec">🧺 Mi carrito</h2>
-    <div class="card order" id="cart"></div>
-    <h2 class="sec">🛵 Datos de entrega</h2>
-    <form class="card" id="f" style="display:grid;gap:.8rem">
-      <label>Dirección <input name="direccion" required></label>
-      <div class="form2">
-        <label>Zona <select name="zona" id="zona" required><option value="">Elegí tu zona</option></select></label>
-        <label>Día <select name="dia"><option>Hoy</option><option>Mañana</option></select></label>
-        <label>Franja horaria <select name="franja" id="franja" required></select></label>
-        <label>Forma de pago <select name="pago" id="pago" required></select></label>
-      </div>
-      <label>Notas para el repartidor <input name="notas" placeholder="Timbre, piso, referencias…"></label>
-      <div id="tot"></div>
-      <div class="err" id="err"></div>
-      <button id="go">Confirmar pedido</button>
-    </form>
+  <main class="wrap">
+    <h2 class="sec" style="margin-top:.6rem">Tu carrito <small id="cnt"></small></h2>
+    <div class="checkout">
+      <section class="panel" id="cart"></section>
+      <form class="panel" id="f" style="display:grid;gap:.8rem">
+        <span class="eyebrow">Datos de entrega</span>
+        <label>Dirección <input name="direccion" required></label>
+        <div class="form2">
+          <label>Zona <select name="zona" id="zona" required><option value="">Elegí tu zona</option></select></label>
+          <label>Día <select name="dia"><option>Hoy</option><option>Mañana</option></select></label>
+          <label>Franja horaria <select name="franja" id="franja" required></select></label>
+          <label>Forma de pago <select name="pago" id="pago" required></select></label>
+        </div>
+        <label>Notas para el repartidor <input name="notas" placeholder="Timbre, piso, referencias…"></label>
+        <div id="tot"></div>
+        <div class="err" id="err"></div>
+        <button class="btn-main" id="go">Confirmar pedido</button>
+      </form>
+    </div>
   </main>
   <script src="tienda.js"></script>
   <script>
@@ -32,20 +35,25 @@
       const z = neg.zonas.find((x) => x.zona === $('#zona').value);
       const envio = !z ? null : cart.subtotal >= neg.envioGratis ? 0 : z.costo_envio;
       const falta = neg.minimo - cart.subtotal;
-      $('#tot').innerHTML = `<div class="summary">Subtotal ${money(cart.subtotal)} · Envío ${envio === 0 ? 'gratis' : money(envio)} · <b>Total ${money(cart.subtotal + (envio || 0))}</b>
-        ${falta > 0 ? `<br>⚠ Te faltan ${money(falta)} para el pedido mínimo.` : cart.subtotal < neg.envioGratis ? `<br>Sumá ${money(neg.envioGratis - cart.subtotal)} y el envío es gratis.` : ''}</div>`;
+      $('#tot').innerHTML = `<div class="totals">
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span>${money(cart.subtotal)}</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Envío</span><span>${envio === 0 ? 'Gratis' : z ? money(envio) : 'elegí tu zona'}</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span>Total</span><span class="big">${money(cart.subtotal + (envio || 0))}</span></div>
+        ${falta > 0 ? `<span class="warn">Te faltan ${money(falta)} para el pedido mínimo</span>` : cart.subtotal < neg.envioGratis ? `<span class="warn">Sumá ${money(neg.envioGratis - cart.subtotal)} y el envío es gratis</span>` : ''}</div>`;
       $('#go').disabled = !cart.items.length || falta > 0;
     }
     function render() {
-      $('#cart').innerHTML = cart.items.length ? `<table>${cart.items.map((i) => `<tr>
-          <td style="font-size:1.6rem">${i.emoji}</td>
-          <td>${esc(i.nombre)} ${i.tipo === 'promo' ? '<span class="pill info">promo</span>' : ''} ${i.sinStock ? '<span class="pill danger">stock insuficiente</span>' : ''}<br><small>${money(i.precio)}${i.unidad === 'kg' ? ' /kg' : ''}</small></td>
-          <td class="num" style="white-space:nowrap">
-            <button class="small ghost" data-q="${i.tipo}|${i.id}|${i.unidad === 'kg' ? -0.5 : -1}">−</button>
-            <b style="display:inline-block;min-width:2.5em;text-align:center">${i.cantidad}${i.unidad === 'kg' ? ' kg' : ''}</b>
-            <button class="small ghost" data-q="${i.tipo}|${i.id}|${i.unidad === 'kg' ? 0.5 : 1}">+</button></td>
+      $('#cnt').textContent = cart.items.length ? `${cart.items.length} productos` : '';
+      $('#cart').innerHTML = cart.items.length ? `<table class="cart-table">${cart.items.map((i) => `<tr>
+          <td style="width:60px"><div class="e">${i.emoji}</div></td>
+          <td><b style="font-size:.95rem">${esc(i.nombre)}</b> ${i.tipo === 'promo' ? '<span class="pill info">promo</span>' : ''} ${i.precioAntes ? '<span class="pill danger">oferta</span>' : ''} ${i.sinStock ? '<span class="pill danger">stock insuficiente</span>' : ''}
+            <br><small style="color:var(--muted)">${money(i.precio)}${i.unidad === 'kg' ? ' /kg' : ''}</small></td>
+          <td class="num"><span class="qty">
+            <button type="button" data-q="${i.tipo}|${i.id}|${i.unidad === 'kg' ? -0.5 : -1}">−</button>
+            <b>${i.cantidad}${i.unidad === 'kg' ? ' kg' : ''}</b>
+            <button type="button" data-q="${i.tipo}|${i.id}|${i.unidad === 'kg' ? 0.5 : 1}">+</button></span></td>
           <td class="num"><b>${money(i.subtotal)}</b></td></tr>`).join('')}</table>`
-        : '<div class="empty">Tu carrito está vacío. <a href="/productos.html">Ir a productos</a></div>';
+        : '<div class="empty">Tu carrito está vacío.<br><br><a class="cta" href="/productos.html">Ir a productos <span>→</span></a></div>';
       setCartCount(cart);
       totales();
     }
@@ -58,7 +66,7 @@
     (async () => {
       const me = await header();
       [neg, cart] = await Promise.all([api('/api/negocio-publico'), api('/api/carrito')]);
-      $('#zona').innerHTML += neg.zonas.map((z) => `<option value="${esc(z.zona)}">${esc(z.zona)} (envío ${money(z.costo_envio)})</option>`).join('');
+      $('#zona').innerHTML += neg.zonas.map((z) => `<option value="${esc(z.zona)}">${esc(z.zona)} · envío ${money(z.costo_envio)}</option>`).join('');
       $('#franja').innerHTML = neg.franjas.map((x) => `<option>${esc(x)}</option>`).join('');
       $('#pago').innerHTML = neg.pagos.map((x) => `<option value="${x}">${PAGO[x] || x}</option>`).join('');
       const f = $('#f');
@@ -72,9 +80,12 @@
       const f = e.target;
       try {
         const o = await api('/api/checkout', { method: 'POST', body: { direccion: f.direccion.value, zona: f.zona.value, dia: f.dia.value, franja: f.franja.value, pago: f.pago.value, notas: f.notas.value } });
-        document.querySelector('main').innerHTML = `<div class="hero" style="margin-top:1rem"><div><h2>✔ ¡Pedido ${o.number} recibido!</h2>
-          <div>Total ${money(o.total)} · ${esc(o.zone)} · ${esc(o.deliveryDay || '')} ${esc(o.deliverySlot)}. Te avisamos cuando salga el repartidor.</div></div>
-          <div class="spacer"></div><a class="btn-light" href="/">Volver al inicio</a></div>`;
+        document.querySelector('main').innerHTML = `<section class="bento" style="grid-template-columns:1fr;margin-top:1rem"><div class="tile tile-hero" style="min-height:260px">
+          <span class="float" style="right:8%;top:14%">🛵</span>
+          <span class="eyebrow" style="color:var(--accent)">Pedido ${o.number}</span>
+          <h1>¡Listo! <em>Ya lo estamos preparando.</em></h1>
+          <p>Total ${money(o.total)} · ${esc(o.zone)} · ${esc(o.deliveryDay || '')} ${esc(o.deliverySlot)}. Te avisamos cuando salga el repartidor.</p>
+          <a class="cta" href="/">Volver al inicio <span>→</span></a></div></section>`;
         setCartCount({ items: [] });
       } catch (err) { $('#err').textContent = err.message; }
     };

@@ -2,13 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Categoría · La Esquina Socios</title>
+  <title>Categoría · Provee Express</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tienda.css">
 </head>
 <body class="shop">
   <main class="wrap">
     <div class="crumbs" id="crumbs"></div>
-    <h2 class="sec" id="tit"></h2>
+    <div class="cat-hero" id="hero"></div>
     <div class="chips" id="chips"></div>
     <div class="gridp" id="grid"></div>
   </main>
@@ -19,13 +20,17 @@
       const ruta = (new URLSearchParams(location.search).get('ruta') || '').split('/').filter(Boolean);
       const prods = await api('/api/productos');
       const dentro = prods.filter((p) => ruta.every((r, i) => p.ruta[i] === r)).sort((a, b) => b.prioridad - a.prioridad || b.ventas - a.ventas);
-      document.title = `${ruta.join(' › ')} · La Esquina Socios`;
+      const actual = ruta[ruta.length - 1] || 'Todos los productos';
+      document.title = `${ruta.join(' › ')} · Provee Express`;
       $('#crumbs').innerHTML = `<a href="/productos.html">Productos</a>` + ruta.map((r, i) => ` › <a href="/categoria.html?ruta=${enc(ruta.slice(0, i + 1))}">${esc(r)}</a>`).join('');
-      $('#tit').innerHTML = `${esc(ruta[ruta.length - 1] || 'Todos')} <small style="color:var(--muted);font-weight:400">${dentro.length} productos</small>`;
+      const ofertas = dentro.filter((p) => p.descuento).length;
+      $('#hero').style.setProperty('--tint', tint(ruta[0]));
+      $('#hero').innerHTML = `<span class="big">${CAT_EMOJI[ruta[0]] || '🛒'}</span><div><span class="eyebrow">${ruta.length > 1 ? esc(ruta.slice(0, -1).join(' › ')) : 'Categoría'}</span>
+        <h1>${esc(actual)}</h1><small style="color:var(--muted)">${dentro.length} productos${ofertas ? ` · <b style="color:#c2361b">${ofertas} en oferta</b>` : ''}</small></div>`;
       // Subcategorías del nivel siguiente.
       const subs = [...new Set(dentro.map((p) => p.ruta[ruta.length]).filter(Boolean))];
       const padre = ruta.length > 1 ? `<a class="chip" href="/categoria.html?ruta=${enc(ruta.slice(0, -1))}">← ${esc(ruta[ruta.length - 2])}</a>` : '';
-      $('#chips').innerHTML = padre + (subs.length ? `<span class="chip on">Todo</span>` + subs.map((s) => `<a class="chip" href="/categoria.html?ruta=${enc([...ruta, s])}">${esc(s)} (${dentro.filter((p) => p.ruta[ruta.length] === s).length})</a>`).join('') : '');
+      $('#chips').innerHTML = padre + (subs.length ? `<span class="chip on">Todo</span>` + subs.map((s) => `<a class="chip" href="/categoria.html?ruta=${enc([...ruta, s])}">${esc(s)} <span style="color:var(--muted)">${dentro.filter((p) => p.ruta[ruta.length] === s).length}</span></a>`).join('') : '');
       $('#grid').innerHTML = dentro.map((p) => prodCard(p)).join('') || '<div class="empty">No hay productos en esta categoría.</div>';
     })();
   </script>

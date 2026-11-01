@@ -40,7 +40,7 @@ function clearSession(res) {
 
 // Rutas que no piden login: pantalla de login, recursos comunes y el back-office de envíos.
 const PUBLIC = [
-  /^\/login\.html$/, /^\/styles\.css$/, /^\/favicon\.ico$/, /^\/health$/, /^\/api\/login$/,
+  /^\/login\.html$/, /^\/(styles|tienda)\.css$/, /^\/favicon\.ico$/, /^\/health$/, /^\/api\/login$/,
   /^\/panel(\.html|\.js)$/, /^\/chat(\.html|\.js)$/,
   /^\/api\/(mensajes|conversaciones|pedidos|metricas|ejemplos|negocio)(\/|$)/,
 ];

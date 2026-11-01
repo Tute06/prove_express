@@ -129,4 +129,4 @@ function viewConversation(c) {
 }
 
 const PORT = Number(process.env.PORT || 3000);
-app.listen(PORT, () => console.log(`Changuito escuchando en :${PORT} (IA ${ai.hasKey() ? 'activa, modelo ' + ai.MODEL : 'SIN KEY'})`));
+app.listen(PORT, () => console.log(`Provee Express escuchando en :${PORT} (IA ${ai.hasKey() ? 'activa, modelo ' + ai.MODEL : 'SIN KEY'})`));

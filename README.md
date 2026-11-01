@@ -1,4 +1,4 @@
-# 🛒 Changuito: mesa de pedidos con IA para envíos a domicilio
+# 🛒 Provee Express: tienda de socios y mesa de pedidos con IA
 
 > Sistema de gestión y pedidos de compras a domicilio (repo `prove_express`).
 
@@ -29,7 +29,7 @@ Dos piezas que trabajan juntas:
 ### 2. Mesa de pedidos unificada para el equipo de envíos (`/panel.html`)
 Todo mensaje entra, queda registrado y se responde en segundos:
 
-| Dolor | Qué hace Changuito |
+| Dolor | Qué hace Provee Express |
 |---|---|
 | Mensajes que se pierden | **Bandeja unificada** (WhatsApp, llamados y web). Cada mensaje se guarda *antes* de llamar a la IA. Si la IA falla, igual queda en la bandeja marcado como **"requiere humano"**. Un contador muestra cuánto espera cada cliente y alerta pasados 5 minutos. |
 | Pedidos mal anotados | La IA convierte el texto libre en un **pedido estructurado** validado contra el **catálogo real**: precios y stock los calcula el servidor. Detecta ítems ambiguos, productos sin stock (y ofrece reemplazo), fuera de zona, bajo el mínimo, y datos que faltan. Antes de confirmar, muestra el resumen al cliente. |

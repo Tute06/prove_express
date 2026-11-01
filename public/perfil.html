@@ -2,13 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mi perfil · La Esquina Socios</title>
+  <title>Mi perfil · Provee Express</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tienda.css">
 </head>
 <body class="shop">
   <main class="wrap" style="max-width:720px">
-    <h2 class="sec">👤 Mi perfil</h2>
-    <form class="card" id="f" style="display:grid;gap:.8rem">
+    <h2 class="sec" style="margin-top:.6rem">Mi perfil <small>datos de contacto y entrega</small></h2>
+    <form class="panel" id="f" style="display:grid;gap:.8rem">
       <div style="display:flex;gap:1rem;align-items:center">
         <img id="foto" alt="" style="width:96px;height:96px;border-radius:50%;object-fit:cover;background:#eee">
         <div style="display:grid;gap:.3rem">
@@ -24,7 +25,7 @@
       </div>
       <label>Dirección de entrega <input name="direccion"></label>
       <div class="err" id="err"></div>
-      <div style="display:flex;gap:.5rem"><button>Guardar cambios</button><a class="chip" href="/">Volver al inicio</a></div>
+      <div style="display:flex;gap:.5rem"><button class="btn-main" style="width:auto;padding:.8rem 1.6rem">Guardar cambios</button><a class="chip" href="/">Volver al inicio</a></div>
     </form>
   </main>
   <script src="tienda.js"></script>

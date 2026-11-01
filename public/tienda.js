@@ -3,6 +3,12 @@ const $ = (s) => document.querySelector(s);
 const money = (n) => (n == null ? '—' : '$' + Math.round(n).toLocaleString('es-AR'));
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const enc = (ruta) => encodeURIComponent(ruta.join('/'));
+const TINT = {
+  'Lácteos': '#e6f0ff', 'Panadería': '#fdebd3', 'Almacén': '#f6ecd9', 'Bebidas': '#dff3fb', 'Frutas y verduras': '#e3f6e0',
+  'Carnicería': '#fde2e0', 'Limpieza': '#e4ecfb', 'Perfumería': '#f3e5fb',
+};
+const CAT_EMOJI = { 'Lácteos': '🥛', 'Panadería': '🥖', 'Almacén': '🥫', 'Bebidas': '🥤', 'Frutas y verduras': '🍎', 'Carnicería': '🥩', 'Limpieza': '🧽', 'Perfumería': '🧴' };
+const tint = (cat) => TINT[cat] || '#f1ede2';
 
 async function api(url, opts = {}) {
   const res = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...opts, body: opts.body ? JSON.stringify(opts.body) : undefined });
@@ -21,35 +27,47 @@ function toast(msg) {
 
 function setCartCount(cart) {
   const n = cart.items.length;
-  const el = $('#cartN'); if (el) { el.textContent = n; el.style.display = n ? '' : 'none'; }
+  const el = $('#cartN'); if (el) el.textContent = n;
 }
 
-async function header() {
+async function header({ search = true } = {}) {
   const [me, cart] = await Promise.all([api('/api/me'), api('/api/carrito')]);
   const av = me.foto ? `<img class="avatar" src="${me.foto}" alt="">` : `<span class="avatar">${esc(me.nombre[0])}</span>`;
   document.body.insertAdjacentHTML('afterbegin', `
-    <header class="top">
-      <a href="/" style="text-decoration:none"><h1>🛒 La Esquina · Socios</h1></a>
-      <div class="spacer"></div>
-      <a class="btn" href="/productos.html">Productos</a>
-      <a class="btn cartbtn" href="/carrito.html">🧺 Carrito <span class="n" id="cartN"></span></a>
-      <a class="btn" href="/perfil.html">${av} ${esc(me.nombre.split(' ')[0])}</a>
-      <a class="btn" href="#" id="logout">Salir</a>
+    <header class="nav">
+      <a class="logo" href="/"><span class="logo-mark">PE</span><span>Provee Express<small>Club de socios</small></span></a>
+      ${search ? `<form class="nav-search" action="/productos.html"><input name="q" placeholder="Buscá leche, yerba, detergente…" autocomplete="off"></form>` : '<div style="flex:1"></div>'}
+      <nav class="nav-links">
+        <a class="hide-sm" href="/productos.html">Productos</a>
+        <a class="cart-pill" href="/carrito.html">🧺 Carrito <b id="cartN">0</b></a>
+        <a href="/perfil.html" title="Mi perfil">${av}</a>
+        <button id="logout" title="Salir">Salir</button>
+      </nav>
     </header>`);
+  footer();
   setCartCount(cart);
-  $('#logout').onclick = async (e) => { e.preventDefault(); await api('/api/logout', { method: 'POST' }); location.href = '/login.html'; };
+  $('#logout').onclick = async () => { await api('/api/logout', { method: 'POST' }); location.href = '/login.html'; };
   return me;
+}
+
+// Footer común: marca al centro, fecha y hora en vivo a la derecha.
+function footer() {
+  document.body.insertAdjacentHTML('beforeend', `<footer class="foot"><span></span><span class="brand">Provee Express · 2026</span><span id="clock"></span></footer>`);
+  const tick = () => { $('#clock').textContent = new Date().toLocaleString('es-AR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }); };
+  tick();
+  setInterval(tick, 1000);
 }
 
 function prodCard(p, extra = '') {
   const unidad = p.unidad === 'kg' ? ' <small>/kg</small>' : '';
-  return `<div class="prod">${extra}
-    <div class="ph">${p.emoji}</div>
-    ${p.descuento ? `<span class="pill danger" style="align-self:flex-start">OFERTA −${p.descuento}%</span>` : p.enPromo ? `<span class="pill warn" style="align-self:flex-start" title="${esc(p.enPromo.join(', '))}">En promo</span>` : ''}
-    <div class="nm">${esc(p.nombre)}</div>
-    <div class="pr">${money(p.precio)}${unidad}${p.precioAntes ? ` <small style="text-decoration:line-through">${money(p.precioAntes)}</small>` : ''}</div>
-    ${p.stock <= 0 ? '<div class="ns">Sin stock</div>' : ''}
-    <button class="small" data-add="${p.id}" ${p.stock <= 0 ? 'disabled' : ''}>Agregar</button>
+  const badge = p.stock <= 0 ? '<span class="badge ns">Sin stock</span>'
+    : p.descuento ? `<span class="badge off">−${p.descuento}%</span>`
+    : p.enPromo ? `<span class="badge promo-b" title="${esc(p.enPromo.join(', '))}">Promo</span>` : '';
+  return `<div class="prod">
+    <div class="ph" style="--tint:${tint(p.ruta?.[0])}"><span class="e">${p.emoji}</span>${badge}
+      <button class="add" data-add="${p.id}" ${p.stock <= 0 ? 'disabled' : ''} aria-label="Agregar ${esc(p.nombre)}">+</button></div>
+    <div class="pr">${money(p.precio)}${unidad}${p.precioAntes ? `<s>${money(p.precioAntes)}</s>` : ''}</div>
+    <div class="nm">${esc(p.nombre)}</div>${extra}
   </div>`;
 }
 
@@ -63,8 +81,9 @@ document.addEventListener('click', async (e) => {
 // Asistente IA: lista libre → ítems revisables → carrito.
 function iaBox(el) {
   el.innerHTML = `<div class="ia-box">
-    <h3>✨ Armá tu carrito con IA</h3>
-    <small>Escribí o pegá tu lista como la mandarías por WhatsApp. La IA la convierte en productos del catálogo y vos revisás antes de agregar.</small>
+    <span class="eyebrow" style="color:var(--accent)">Asistente con IA</span>
+    <h3><span class="spark">✦</span> Armá tu carrito escribiendo tu lista</h3>
+    <small>Pegala como la mandarías por WhatsApp. La IA la convierte en productos del catálogo, te avisa lo que no hay y vos revisás antes de agregar.</small>
     <textarea id="iaText" placeholder="ej: 2 leches, un kilo de pan, medio de queso cremoso, 3 coca grandes y yerba playadito" style="margin-top:.5rem"></textarea>
     <div style="display:flex;gap:.5rem;margin-top:.4rem"><button id="iaGo">Armar con IA</button></div>
     <div class="ia-res" id="iaRes"></div></div>`;
