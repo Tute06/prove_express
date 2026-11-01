@@ -1,0 +1,30 @@
+[
+  {
+    "titulo": "WhatsApp desordenado",
+    "channel": "whatsapp",
+    "name": "Marta Gómez",
+    "phone": "+54 9 341 555-0101",
+    "text": "hola buenas tardes!! queria hacer un pedido para hoy a la tarde si se puede. 2 leches descremadas la serenisima, un kilo de pan, 3 coca de las grandes, medio de queso cremoso y una yerba taragui. estoy en pichincha, Alvear 120 piso 2"
+  },
+  {
+    "titulo": "Notas de un llamado",
+    "channel": "telefono",
+    "name": "Don Rubén",
+    "phone": "+54 9 341 555-0202",
+    "text": "Llamó señor mayor, Rubén. Quiere 1 kg carne picada, papas 2 kg, cebolla 1 kg, puré de tomate x2, fideos (no dijo cuáles), un vino tinto. Paga en efectivo. Vive en Echesortu, Mendoza 3400. No dijo horario."
+  },
+  {
+    "titulo": "Consulta rápida",
+    "channel": "whatsapp",
+    "name": "Lucas",
+    "phone": "+54 9 341 555-0303",
+    "text": "hola llegan a fisherton? cuanto sale el envio y hasta que hora puedo pedir para que llegue hoy?"
+  },
+  {
+    "titulo": "Reclamo",
+    "channel": "whatsapp",
+    "name": "Carla Ruiz",
+    "phone": "+54 9 341 555-0404",
+    "text": "Hola, hice un pedido ayer a la mañana y nunca llegó!! Nadie me contesta, ya es la tercera vez que escribo. Necesito que alguien me diga algo"
+  }
+]

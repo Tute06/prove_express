@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>La Esquina · Pedidos por WhatsApp</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { background: #d1d7db; }
+    .phone { max-width: 460px; margin: 0 auto; height: 100dvh; display: flex; flex-direction: column; background: #efeae2; }
+    .bar { background: #008069; color: #fff; padding: .7rem 1rem; display: flex; gap: .7rem; align-items: center; }
+    .bar .av { width: 38px; height: 38px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 1.3rem; }
+    .bar small { opacity: .85; display: block; }
+    #thread { flex: 1; max-height: none; border-radius: 0; }
+    .compose { display: flex; gap: .4rem; padding: .5rem; background: #f0f2f5; }
+    .compose input { border-radius: 999px; }
+    .compose button { border-radius: 999px; background: #008069; }
+    .intro { padding: 1rem; display: grid; gap: .5rem; }
+    .typing { align-self: flex-end; font-size: .8rem; color: var(--muted); display: none; }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="bar"><div class="av">🛒</div><div><b>Súper La Esquina · Envíos</b><small>Asistente con IA · responde al instante</small></div></div>
+    <div id="intro" class="intro card" style="margin:1rem">
+      <b>Simulación del canal WhatsApp</b>
+      <small>En producción este chat se conecta a la API de WhatsApp Business; acá lo simulamos en el navegador.</small>
+      <input id="name" placeholder="Tu nombre" value="">
+      <input id="phone" placeholder="Tu teléfono" value="">
+      <button id="start">Empezar a chatear</button>
+    </div>
+    <div class="thread" id="thread" style="display:none"></div>
+    <div class="typing" id="typing">escribiendo…</div>
+    <form class="compose" id="compose" style="display:none">
+      <input id="text" placeholder="Escribí tu pedido o consulta" autocomplete="off">
+      <button>➤</button>
+    </form>
+  </div>
+  <script src="chat.js"></script>
+</body>
+</html>
