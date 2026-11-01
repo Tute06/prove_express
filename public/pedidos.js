@@ -76,6 +76,7 @@ function render() {
 
 async function cargar() {
   const res = await fetch('/api/pedidos');
+  if (res.status === 401) return (location.href = '/admin.html');
   pedidos = (await res.json()).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   render();
 }
@@ -98,6 +99,7 @@ document.addEventListener('click', async (e) => {
   }
 });
 $('#q').oninput = (e) => { filtro.q = e.target.value; render(); };
+$('#adminLogout').onclick = async () => { await fetch('/api/admin/logout', { method: 'POST' }); location.href = '/admin.html'; };
 
 const clock = $('#clock');
 const tick = () => { clock.textContent = new Date().toLocaleString('es-AR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }); };

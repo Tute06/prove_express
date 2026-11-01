@@ -14,6 +14,24 @@ app.set('trust proxy', 1);
 app.use(auth.guard);
 const json50 = express.json({ limit: '50kb' });
 app.use((req, res, next) => (req.path === '/api/me' ? next() : json50(req, res, next)));
+// Ingreso de administradores (panel de envíos). Límite de intentos por IP.
+const intentos = new Map();
+app.post('/api/admin/login', (req, res) => {
+  const t = Date.now();
+  const arr = (intentos.get(req.ip) || []).filter((x) => t - x < 10 * 60 * 1000);
+  if (arr.length >= 10) return res.status(429).json({ error: 'Demasiados intentos, esperá unos minutos.' });
+  intentos.set(req.ip, [...arr, t]);
+  const usuario = typeof req.body.usuario === 'string' ? req.body.usuario.trim() : '';
+  const clave = typeof req.body.clave === 'string' ? req.body.clave : '';
+  if (!auth.adminValido(usuario, clave)) return res.status(401).json({ error: 'Usuario o clave incorrectos.' });
+  intentos.delete(req.ip);
+  auth.setAdminSession(res, usuario);
+  res.json({ ok: true });
+});
+app.post('/api/admin/logout', (req, res) => {
+  auth.clearAdminSession(res);
+  res.json({ ok: true });
+});
 app.use(shop);
 app.get('/favicon.ico', (req, res) => res.type('image/svg+xml').send('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🛒</text></svg>'));
 app.use(express.static(path.join(__dirname, '..', 'public')));

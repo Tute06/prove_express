@@ -36,6 +36,7 @@ function toast(msg) {
 
 async function api(url, opts = {}) {
   const res = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...opts, body: opts.body ? JSON.stringify(opts.body) : undefined });
+  if (res.status === 401) { location.href = '/admin.html'; throw new Error('Sesión de administrador vencida'); }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || `Error ${res.status}`);
   return data;
@@ -219,6 +220,12 @@ document.addEventListener('submit', async (e) => {
   } finally {
     btn.disabled = false;
   }
+});
+
+document.addEventListener('click', async (e) => {
+  if (e.target.id !== 'adminLogout') return;
+  await fetch('/api/admin/logout', { method: 'POST' });
+  location.href = '/admin.html';
 });
 
 (async function init() {
