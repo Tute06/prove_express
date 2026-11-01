@@ -204,7 +204,17 @@ router.post('/api/ia/lista', express.json(), async (req, res) => {
       const aElegir = !i.productId && opciones.length >= 2;
       return { ...i, status: aElegir ? 'a_elegir' : i.status, opciones: aElegir ? opciones : [], emoji: db.producto(i.productId)?.emoji || (aElegir ? '🤔' : '❓'), img: imagenes[i.productId]?.img || null, note: out.items[n].note };
     });
-    res.json({ reply: out.reply, items, meta: out._meta });
+    // Si hay ítems para elegir, el mensaje no puede decir que la IA ya eligió: se arma acá.
+    const aElegir = items.filter((i) => i.status === 'a_elegir');
+    let reply = out.reply;
+    if (aElegir.length) {
+      const noEsta = items.filter((i) => i.status === 'a_definir' || i.status === 'no_existe');
+      const sinStock = items.filter((i) => i.status === 'sin_stock');
+      reply = `Armé un listado de productos que podrían gustarte. Elegí una opción en: ${aElegir.map((i) => `“${i.rawText}”`).join(', ')}.`
+        + (noEsta.length ? ` No encontramos: ${noEsta.map((i) => `“${i.rawText}”`).join(', ')}.` : '')
+        + (sinStock.length ? ` Sin stock: ${sinStock.map((i) => i.name).join(', ')}${sinStock.some((i) => i.alternativeId) ? ' (te propusimos un reemplazo)' : ''}.` : '');
+    }
+    res.json({ reply, items, meta: out._meta });
   } catch (err) {
     console.error('[ia/lista]', err.message);
     res.status(503).json({ error: 'El asistente no está disponible ahora. Podés armar el carrito desde el catálogo.' });
