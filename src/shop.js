@@ -193,7 +193,17 @@ router.post('/api/ia/lista', express.json(), async (req, res) => {
   if (!limitar(req.dni, 20)) return res.status(429).json({ error: 'Usaste mucho el asistente, probá en unos minutos.' });
   try {
     const out = await ai.listaACarrito(text);
-    const items = desk.buildItems(out.items).map((i, n) => ({ ...i, emoji: db.producto(i.productId)?.emoji || '❓', img: imagenes[i.productId]?.img || null, note: out.items[n].note }));
+    const porId = new Map(catalogoVista().map((p) => [p.id, p]));
+    const items = desk.buildItems(out.items).map((i, n) => {
+      // Opciones para que el socio elija: solo productos existentes y con stock, ofertas primero.
+      const opciones = [...new Set(out.items[n].options || [])]
+        .map((id) => porId.get(id))
+        .filter((p) => p && p.stock > 0)
+        .sort((a, b) => b.prioridad - a.prioridad)
+        .map((p) => ({ id: p.id, nombre: p.nombre, precio: p.precio, precioAntes: p.precioAntes, unidad: p.unidad, img: p.img, emoji: p.emoji }));
+      const aElegir = !i.productId && opciones.length >= 2;
+      return { ...i, status: aElegir ? 'a_elegir' : i.status, opciones: aElegir ? opciones : [], emoji: db.producto(i.productId)?.emoji || (aElegir ? '🤔' : '❓'), img: imagenes[i.productId]?.img || null, note: out.items[n].note };
+    });
     res.json({ reply: out.reply, items, meta: out._meta });
   } catch (err) {
     console.error('[ia/lista]', err.message);

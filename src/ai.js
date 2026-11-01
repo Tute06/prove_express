@@ -162,7 +162,19 @@ const SCHEMA_LISTA = {
   required: ['reply', 'items'],
   properties: {
     reply: { type: 'string' },
-    items: SCHEMA.properties.order.properties.items,
+    items: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['product_id', 'raw_text', 'quantity', 'note', 'alternative_product_id', 'options'],
+        properties: {
+          ...SCHEMA.properties.order.properties.items.items.properties,
+          // Si lo pedido coincide con varios productos con stock, la IA no elige: devuelve las opciones.
+          options: { type: 'array', items: { type: 'string' } },
+        },
+      },
+    },
   },
 };
 

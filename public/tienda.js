@@ -97,23 +97,39 @@ function iaBox(el) {
     try {
       const r = await api('/api/ia/lista', { method: 'POST', body: { text } });
       items = r.items;
-      const st = { ok: '', sin_stock: '<span class="pill danger">sin stock</span>', a_definir: '<span class="pill warn">no encontrado</span>', no_existe: '<span class="pill danger">no existe</span>' };
+      const st = { ok: '', sin_stock: '<span class="pill danger">sin stock</span>', a_definir: '<span class="pill warn">no encontrado</span>', no_existe: '<span class="pill danger">no existe</span>', a_elegir: '<span class="pill info">elegí una opción</span>' };
+      // Ítem ambiguo: el socio elige entre las opciones con stock (no decide la IA).
+      const opciones = (i, n) => `<div class="opts">${i.opciones.map((o) => `<label class="opt">
+          <input type="radio" name="opt${n}" value="${o.id}" data-opt="${n}">
+          <span class="mini">${thumb(o)}</span>
+          <span><b>${esc(o.nombre)}</b><br>${money(o.precio)}${o.unidad === 'kg' ? '/kg' : ''}${o.precioAntes ? ` <s>${money(o.precioAntes)}</s> <span class="pill danger">oferta</span>` : ''}</span>
+        </label>`).join('')}</div>`;
       $('#iaRes').innerHTML = `<div class="summary">🤖 ${esc(r.reply)}</div>
         <table>${items.map((i, n) => `<tr>
-          <td><input type="checkbox" data-i="${n}" ${i.status === 'ok' ? 'checked' : ''} ${i.productId ? '' : 'disabled'}></td>
+          <td><input type="checkbox" data-i="${n}" ${i.status === 'ok' ? 'checked' : ''} ${i.productId || i.opciones.length ? '' : 'disabled'}></td>
           <td><div class="mini">${thumb(i)}</div></td>
           <td><b>${esc(i.name || i.rawText)}</b> ${st[i.status] || ''}<br><small style="color:var(--muted)">“${esc(i.rawText)}”${i.note ? ' · ' + esc(i.note) : ''}</small>
-            ${i.alternativeId ? `<br><label style="display:inline;color:var(--ink)"><input type="checkbox" data-alt="${n}" checked style="width:auto"> Reemplazar por <b>${esc(i.alternativeName)}</b></label>` : ''}</td>
+            ${i.alternativeId ? `<br><label style="display:inline;color:var(--ink)"><input type="checkbox" data-alt="${n}" checked style="width:auto"> Reemplazar por <b>${esc(i.alternativeName)}</b></label>` : ''}
+            ${i.opciones.length ? opciones(i, n) : ''}</td>
           <td class="num">${i.quantity}${i.unit === 'kg' ? ' kg' : ' u'}</td>
           <td class="num">${i.status === 'ok' ? money(i.subtotal) : ''}</td></tr>`).join('')}</table>
         <button id="iaAdd" style="margin-top:.5rem">Agregar seleccionados al carrito</button>`;
+      // Elegir una opción marca el ítem para agregar.
+      $('#iaRes').querySelectorAll('[data-opt]').forEach((r) => r.addEventListener('change', () => { $(`[data-i="${r.dataset.opt}"]`).checked = true; }));
       $('#iaAdd').onclick = async () => {
         const sel = [];
+        const sinElegir = [];
         items.forEach((i, n) => {
+          if (!document.querySelector(`[data-i="${n}"]`)?.checked) return;
           const alt = document.querySelector(`[data-alt="${n}"]`);
-          if (i.alternativeId && alt?.checked) sel.push({ tipo: 'producto', id: i.alternativeId, cantidad: i.quantity });
-          else if (document.querySelector(`[data-i="${n}"]`)?.checked) sel.push({ tipo: 'producto', id: i.productId, cantidad: i.quantity });
+          if (i.opciones.length) {
+            const elegido = document.querySelector(`[data-opt="${n}"]:checked`);
+            if (elegido) sel.push({ tipo: 'producto', id: elegido.value, cantidad: Math.max(1, Math.ceil(i.quantity)) });
+            else sinElegir.push(i.rawText);
+          } else if (i.alternativeId && alt?.checked) sel.push({ tipo: 'producto', id: i.alternativeId, cantidad: i.quantity });
+          else if (i.productId) sel.push({ tipo: 'producto', id: i.productId, cantidad: i.quantity });
         });
+        if (sinElegir.length) return toast(`Elegí una opción para: ${sinElegir.join(', ')}`);
         if (!sel.length) return toast('No hay ítems seleccionados');
         setCartCount(await api('/api/carrito', { method: 'POST', body: { items: sel } }));
         toast(`${sel.length} productos agregados ✔`);
