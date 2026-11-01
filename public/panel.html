@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Changuito · Mesa de pedidos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>🛒 Changuito · Mesa de pedidos con IA</h1>
+      <div class="sub">Envíos a domicilio · Supermercado La Esquina</div>
+    </div>
+    <div class="spacer"></div>
+    <span id="aiStatus" class="pill muted">IA …</span>
+    <a href="/" target="_blank">Tienda de socios ↗</a>
+    <a href="chat.html" target="_blank">Abrir chat del cliente (WhatsApp simulado) ↗</a>
+  </header>
+
+  <section class="kpis" id="kpis"></section>
+
+  <main class="grid">
+    <section>
+      <div class="card">
+        <h2>📥 Bandeja unificada <span class="pill count" id="inboxCount">0</span></h2>
+        <div class="inbox" id="inbox"></div>
+      </div>
+      <div class="card" style="margin-top:.8rem">
+        <h2>✍️ Cargar mensaje de otro canal</h2>
+        <form class="ingest" id="ingest">
+          <select name="channel">
+            <option value="whatsapp">WhatsApp (pegar mensaje)</option>
+            <option value="telefono">Llamado telefónico (notas o transcripción)</option>
+          </select>
+          <div class="two">
+            <input name="name" placeholder="Nombre">
+            <input name="phone" placeholder="Teléfono">
+          </div>
+          <textarea name="text" placeholder="Pegá el mensaje o escribí lo que dijo el cliente…" required></textarea>
+          <button type="submit">Procesar con IA</button>
+          <div class="examples" id="examples"></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="card" id="detail">
+      <div class="empty">Elegí una conversación de la bandeja.</div>
+    </section>
+
+    <section class="card">
+      <h2>📦 Pedidos</h2>
+      <div class="board" id="board"></div>
+    </section>
+  </main>
+  <div class="toast" id="toast"></div>
+  <script src="panel.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Categoría · La Esquina Socios</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="shop">
+  <main class="wrap">
+    <div class="crumbs" id="crumbs"></div>
+    <h2 class="sec" id="tit"></h2>
+    <div class="chips" id="chips"></div>
+    <div class="gridp" id="grid"></div>
+  </main>
+  <script src="tienda.js"></script>
+  <script>
+    (async () => {
+      await header();
+      const ruta = (new URLSearchParams(location.search).get('ruta') || '').split('/').filter(Boolean);
+      const prods = await api('/api/productos');
+      const dentro = prods.filter((p) => ruta.every((r, i) => p.ruta[i] === r)).sort((a, b) => b.prioridad - a.prioridad || b.ventas - a.ventas);
+      document.title = `${ruta.join(' › ')} · La Esquina Socios`;
+      $('#crumbs').innerHTML = `<a href="/productos.html">Productos</a>` + ruta.map((r, i) => ` › <a href="/categoria.html?ruta=${enc(ruta.slice(0, i + 1))}">${esc(r)}</a>`).join('');
+      $('#tit').innerHTML = `${esc(ruta[ruta.length - 1] || 'Todos')} <small style="color:var(--muted);font-weight:400">${dentro.length} productos</small>`;
+      // Subcategorías del nivel siguiente.
+      const subs = [...new Set(dentro.map((p) => p.ruta[ruta.length]).filter(Boolean))];
+      const padre = ruta.length > 1 ? `<a class="chip" href="/categoria.html?ruta=${enc(ruta.slice(0, -1))}">← ${esc(ruta[ruta.length - 2])}</a>` : '';
+      $('#chips').innerHTML = padre + (subs.length ? `<span class="chip on">Todo</span>` + subs.map((s) => `<a class="chip" href="/categoria.html?ruta=${enc([...ruta, s])}">${esc(s)} (${dentro.filter((p) => p.ruta[ruta.length] === s).length})</a>`).join('') : '');
+      $('#grid').innerHTML = dentro.map((p) => prodCard(p)).join('') || '<div class="empty">No hay productos en esta categoría.</div>';
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+[
+ {
+  "id": "PR1",
+  "tipo": "oferta",
+  "titulo": "Yerba Playadito 1 kg",
+  "detalle": "Precio socio por esta semana",
+  "productos": [
+   "A07"
+  ],
+  "precio": 4700,
+  "precio_antes": 5600,
+  "emoji": "🧉",
+  "creada": "2026-11-01T09:00:00-03:00"
+ },
+ {
+  "id": "PR2",
+  "tipo": "combo",
+  "titulo": "Combo Domingo de pastas",
+  "detalle": "2 Fideos tirabuzón + 2 Puré de tomate + Queso cremoso ½ kg",
+  "productos": [
+   "A02",
+   "A02",
+   "A04",
+   "A04",
+   "L05"
+  ],
+  "precio": 10900,
+  "precio_antes": 13150,
+  "emoji": "🍝",
+  "creada": "2026-10-31T18:30:00-03:00"
+ },
+ {
+  "id": "PR3",
+  "tipo": "promo",
+  "titulo": "2×1 en Coca-Cola 2,25 L",
+  "detalle": "Llevando 2 pagás 1, máximo 4 por socio",
+  "productos": [
+   "B01",
+   "B01"
+  ],
+  "precio": 3900,
+  "precio_antes": 7800,
+  "emoji": "🥤",
+  "creada": "2026-10-31T12:00:00-03:00"
+ },
+ {
+  "id": "PR4",
+  "tipo": "combo",
+  "titulo": "Combo Asado para 4",
+  "detalle": "1,5 kg asado de tira + 1 kg chorizo + Vino Toro",
+  "productos": [
+   "C02",
+   "C06",
+   "B06"
+  ],
+  "precio": 30500,
+  "precio_antes": 33250,
+  "emoji": "🔥",
+  "creada": "2026-10-30T20:00:00-03:00"
+ },
+ {
+  "id": "PR5",
+  "tipo": "oferta",
+  "titulo": "Detergente Magistral 500 ml",
+  "detalle": "20 % off para socios",
+  "productos": [
+   "H02"
+  ],
+  "precio": 2160,
+  "precio_antes": 2700,
+  "emoji": "🧴",
+  "creada": "2026-10-29T10:00:00-03:00"
+ },
+ {
+  "id": "PR6",
+  "tipo": "promo",
+  "titulo": "Envío gratis desde $45.000",
+  "detalle": "Solo este fin de semana, en todas las zonas",
+  "productos": [],
+  "precio": null,
+  "precio_antes": null,
+  "emoji": "🛵",
+  "creada": "2026-10-28T09:00:00-03:00"
+ },
+ {
+  "id": "PR7",
+  "tipo": "oferta",
+  "titulo": "Leche descremada SanCor 1 L",
+  "detalle": "Precio socio",
+  "productos": [
+   "L03"
+  ],
+  "precio": 1290,
+  "precio_antes": 1550,
+  "emoji": "🥛",
+  "creada": "2026-11-01T08:30:00-03:00"
+ },
+ {
+  "id": "PR8",
+  "tipo": "oferta",
+  "titulo": "Fideos moñitos Matarazzo 500 g",
+  "detalle": "15 % off",
+  "productos": [
+   "A16"
+  ],
+  "precio": 1360,
+  "precio_antes": 1600,
+  "emoji": "🍝",
+  "creada": "2026-10-31T09:00:00-03:00"
+ },
+ {
+  "id": "PR9",
+  "tipo": "oferta",
+  "titulo": "Detergente Cif ultra 750 ml",
+  "detalle": "Precio socio",
+  "productos": [
+   "H07"
+  ],
+  "precio": 3200,
+  "precio_antes": 3900,
+  "emoji": "🧴",
+  "creada": "2026-10-30T11:00:00-03:00"
+ },
+ {
+  "id": "PR10",
+  "tipo": "oferta",
+  "titulo": "Sprite 2,25 L",
+  "detalle": "Precio socio",
+  "productos": [
+   "B03"
+  ],
+  "precio": 2900,
+  "precio_antes": 3500,
+  "emoji": "🥤",
+  "creada": "2026-10-30T10:00:00-03:00"
+ }
+]

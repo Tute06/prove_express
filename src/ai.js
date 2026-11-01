@@ -5,6 +5,7 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const negocio = require('../data/negocio.json');
 const catalogo = require('../data/catalogo.json');
+const ofertas = require('./ofertas');
 const promptBase = fs.readFileSync(path.join(ROOT, 'prompts', 'agente.md'), 'utf8');
 
 const API_KEY = process.env.OPENAI_API_KEY || '';
@@ -61,7 +62,12 @@ const SCHEMA = {
 
 function catalogoTexto() {
   return catalogo
-    .map((p) => `${p.id} | ${p.nombre} | $${p.precio} por ${p.unidad} | stock ${p.stock}`)
+    .map((p) => {
+      const o = ofertas.oferta.get(p.id);
+      const promo = ofertas.enPromo.get(p.id);
+      const precio = o ? `OFERTA $${o.precio} (antes $${o.antes})` : `$${p.precio}`;
+      return `${p.id} | ${p.nombre} | ${precio} por ${p.unidad} | stock ${p.stock}${promo ? ` | en promo: ${promo.join(', ')}` : ''}`;
+    })
     .join('\n');
 }
 
@@ -137,4 +143,75 @@ async function agentTurn({ channel, messages, order }) {
   return { ...out, _meta: { model: data.model, ms: Date.now() - started, tokens: data.usage?.total_tokens ?? null } };
 }
 
-module.exports = { agentTurn, hasKey: () => Boolean(API_KEY), MODEL };
+const promptLista = fs.readFileSync(path.join(ROOT, 'prompts', 'lista.md'), 'utf8');
+const SCHEMA_LISTA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['reply', 'items'],
+  properties: {
+    reply: { type: 'string' },
+    items: SCHEMA.properties.order.properties.items,
+  },
+};
+
+// Lista de compras en texto libre → ítems del catálogo (la tienda los muestra para revisar antes de agregar).
+async function listaACarrito(text) {
+  if (!API_KEY) throw new Error('La IA no está configurada (falta OPENAI_API_KEY)');
+  const started = Date.now();
+  const system = [
+    promptLista.replaceAll('{{NOMBRE_NEGOCIO}}', negocio.nombre),
+    `## CATÁLOGO (id | nombre | precio | stock)\n${catalogoTexto()}`,
+  ].join('\n\n');
+  const data = await callOpenAI({
+    model: MODEL,
+    messages: [{ role: 'system', content: system }, { role: 'user', content: text }],
+    response_format: { type: 'json_schema', json_schema: { name: 'lista_carrito', strict: true, schema: SCHEMA_LISTA } },
+  });
+  const choice = data.choices?.[0];
+  if (choice?.message?.refusal) throw new Error(`El modelo rechazó: ${choice.message.refusal}`);
+  return { ...JSON.parse(choice.message.content), _meta: { model: data.model, ms: Date.now() - started } };
+}
+
+// Búsqueda sin resultados o sin stock → productos semejantes con stock.
+const SCHEMA_SIMILARES = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['reply', 'items'],
+  properties: {
+    reply: { type: 'string' },
+    items: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['product_id', 'motivo'],
+        properties: { product_id: { type: 'string', enum: catalogo.map((p) => p.id) }, motivo: { type: 'string' } },
+      },
+    },
+  },
+};
+
+async function similares(query, sinStock) {
+  if (!API_KEY) throw new Error('La IA no está configurada (falta OPENAI_API_KEY)');
+  const started = Date.now();
+  const system = [
+    `Sos el asistente de compras de la tienda online para socios de ${negocio.nombre}. El socio buscó algo que no encontró o que no tiene stock.`,
+    'Proponé hasta 6 productos del CATÁLOGO **con stock mayor a 0** que puedan reemplazar o se parezcan a lo buscado (misma función, misma categoría, otra marca o presentación).',
+    'Orden: primero los que estén en OFERTA o en promo y sirvan como reemplazo dentro de la misma categoría; después el resto, del más parecido al menos parecido. Si sugerís una oferta, mencionalo en el motivo (ej. "en oferta, otra marca").',
+    'Interpretá errores de tipeo y nombres coloquiales (ej. "coca" = Coca-Cola, "lavandina" = Ayudín, "fideos" = cualquier pasta seca).',
+    'Si nada del catálogo sirve, devolvé `items` vacío y decilo.',
+    'En `motivo` explicá en pocas palabras por qué sirve (ej. "otra marca, mismo tamaño"). En `reply`, 1 o 2 oraciones cordiales en español rioplatense.',
+    `## CATÁLOGO (id | nombre | precio | stock)\n${catalogoTexto()}`,
+  ].join('\n\n');
+  const user = sinStock.length ? `Busqué: "${query}". Lo encontré pero sin stock: ${sinStock.join(', ')}.` : `Busqué: "${query}" y no apareció nada.`;
+  const data = await callOpenAI({
+    model: MODEL,
+    messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
+    response_format: { type: 'json_schema', json_schema: { name: 'similares', strict: true, schema: SCHEMA_SIMILARES } },
+  });
+  const choice = data.choices?.[0];
+  if (choice?.message?.refusal) throw new Error(`El modelo rechazó: ${choice.message.refusal}`);
+  return { ...JSON.parse(choice.message.content), _meta: { model: data.model, ms: Date.now() - started } };
+}
+
+module.exports = { agentTurn, listaACarrito, similares, hasKey: () => Boolean(API_KEY), MODEL };

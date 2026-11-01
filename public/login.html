@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ingreso socios · La Esquina</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="login-wrap">
+    <form class="login" id="f">
+      <div style="font-size:2.5rem">🛒</div>
+      <h1>Tienda online para socios</h1>
+      <small style="color:var(--muted)">Supermercado La Esquina · compras con envío a domicilio. Acceso exclusivo para socios.</small>
+      <label>Número de documento <input name="dni" inputmode="numeric" autocomplete="username" required></label>
+      <label>Número de socio <input name="socio" inputmode="numeric" type="password" autocomplete="current-password" required></label>
+      <div class="err" id="err"></div>
+      <button>Ingresar</button>
+      <small style="color:var(--muted)">Demo: DNI <b>30111222</b> · socio <b>1001</b></small>
+    </form>
+  </div>
+  <script>
+    document.getElementById('f').onsubmit = async (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ dni: f.dni.value, socio: f.socio.value }) });
+      const d = await res.json();
+      if (res.ok) location.href = '/'; else document.getElementById('err').textContent = d.error;
+    };
+  </script>
+</body>
+</html>

@@ -1,58 +1,53 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Changuito · Mesa de pedidos</title>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inicio · La Esquina Socios</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <header class="top">
-    <div>
-      <h1>🛒 Changuito · Mesa de pedidos con IA</h1>
-      <div class="sub">Envíos a domicilio · Supermercado La Esquina</div>
-    </div>
-    <div class="spacer"></div>
-    <span id="aiStatus" class="pill muted">IA …</span>
-    <a href="chat.html" target="_blank">Abrir chat del cliente (WhatsApp simulado) ↗</a>
-  </header>
-
-  <section class="kpis" id="kpis"></section>
-
-  <main class="grid">
-    <section>
-      <div class="card">
-        <h2>📥 Bandeja unificada <span class="pill count" id="inboxCount">0</span></h2>
-        <div class="inbox" id="inbox"></div>
+<body class="shop">
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <h2 id="hola">¡Hola!</h2>
+        <div>Tus compras del súper, con envío a domicilio y precios de socio.</div>
       </div>
-      <div class="card" style="margin-top:.8rem">
-        <h2>✍️ Cargar mensaje de otro canal</h2>
-        <form class="ingest" id="ingest">
-          <select name="channel">
-            <option value="whatsapp">WhatsApp (pegar mensaje)</option>
-            <option value="telefono">Llamado telefónico (notas o transcripción)</option>
-          </select>
-          <div class="two">
-            <input name="name" placeholder="Nombre">
-            <input name="phone" placeholder="Teléfono">
-          </div>
-          <textarea name="text" placeholder="Pegá el mensaje o escribí lo que dijo el cliente…" required></textarea>
-          <button type="submit">Procesar con IA</button>
-          <div class="examples" id="examples"></div>
-        </form>
-      </div>
+      <div class="spacer"></div>
+      <a class="btn-light" href="/perfil.html">👤 Administrar mi perfil</a>
+      <a class="cta" href="/productos.html">🛍️ Presione aquí para iniciar su compra</a>
     </section>
-
-    <section class="card" id="detail">
-      <div class="empty">Elegí una conversación de la bandeja.</div>
-    </section>
-
-    <section class="card">
-      <h2>📦 Pedidos</h2>
-      <div class="board" id="board"></div>
-    </section>
+    <div id="ia"></div>
+    <h2 class="sec">🔥 Ofertas, combos y promociones <small style="color:var(--muted);font-weight:400">las más nuevas primero</small></h2>
+    <div class="promos" id="promos"></div>
+    <h2 class="sec" id="misPedT" style="display:none">📦 Mis pedidos</h2>
+    <div id="misPed"></div>
   </main>
-  <div class="toast" id="toast"></div>
-  <script src="panel.js"></script>
+  <script src="tienda.js"></script>
+  <script>
+    const TIPO = { oferta: ['Oferta', 'danger'], combo: ['Combo', 'info'], promo: ['Promo', 'warn'] };
+    const EST = { borrador: 'En revisión', confirmado: 'Confirmado', preparando: 'Preparando', en_camino: 'En camino 🛵', entregado: 'Entregado ✔', cancelado: 'Cancelado' };
+    (async () => {
+      const me = await header();
+      $('#hola').textContent = `¡Hola, ${me.nombre.split(' ')[0]}!`;
+      iaBox($('#ia'));
+      const promos = await api('/api/promos');
+      $('#promos').innerHTML = promos.map((p) => {
+        const [t, c] = TIPO[p.tipo];
+        const nuevo = Date.now() - Date.parse(p.creada) < 36 * 3600 * 1000;
+        return `<div class="promo"><div class="em">${p.emoji}</div>
+          <div><span class="pill ${c} tipo">${t}</span> ${nuevo ? '<span class="pill">Nuevo</span>' : ''}</div>
+          <b>${esc(p.titulo)}</b><small>${esc(p.detalle)}</small>
+          ${p.precio != null ? `<div class="precio">${money(p.precio)}<span class="antes">${money(p.precio_antes)}</span></div>
+          <button class="small" data-addpromo="${p.id}">Agregar al carrito</button>` : ''}</div>`;
+      }).join('');
+      const peds = await api('/api/mis-pedidos');
+      if (peds.length) {
+        $('#misPedT').style.display = '';
+        $('#misPed').innerHTML = peds.map((o) => `<div class="card" style="margin-bottom:.4rem;display:flex;gap:1rem;flex-wrap:wrap">
+          <b>${o.number}</b><span>${new Date(o.createdAt).toLocaleString('es-AR')}</span><span>${o.items.length} ítems</span><b>${money(o.total)}</b>
+          <span class="pill">${EST[o.status] || o.status}</span></div>`).join('');
+      }
+    })();
+  </script>
 </body>
 </html>

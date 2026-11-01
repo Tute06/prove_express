@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi perfil · La Esquina Socios</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="shop">
+  <main class="wrap" style="max-width:720px">
+    <h2 class="sec">👤 Mi perfil</h2>
+    <form class="card" id="f" style="display:grid;gap:.8rem">
+      <div style="display:flex;gap:1rem;align-items:center">
+        <img id="foto" alt="" style="width:96px;height:96px;border-radius:50%;object-fit:cover;background:#eee">
+        <div style="display:grid;gap:.3rem">
+          <b id="nom"></b><small id="ids" style="color:var(--muted)"></small>
+          <label>Cambiar foto <input type="file" id="file" accept="image/*"></label>
+        </div>
+      </div>
+      <div class="form2">
+        <label>Email <input name="email" type="email"></label>
+        <label>Celular <input name="celular" inputmode="tel"></label>
+        <label>Teléfono fijo <input name="telefono" inputmode="tel"></label>
+        <label>Zona de entrega <select name="zona" id="zona"><option value="">—</option></select></label>
+      </div>
+      <label>Dirección de entrega <input name="direccion"></label>
+      <div class="err" id="err"></div>
+      <div style="display:flex;gap:.5rem"><button>Guardar cambios</button><a class="chip" href="/">Volver al inicio</a></div>
+    </form>
+  </main>
+  <script src="tienda.js"></script>
+  <script>
+    let foto;
+    (async () => {
+      const me = await header();
+      const neg = await api('/api/negocio-publico');
+      $('#zona').innerHTML += neg.zonas.map((z) => `<option>${esc(z.zona)}</option>`).join('');
+      const f = $('#f');
+      for (const k of ['email', 'celular', 'telefono', 'direccion', 'zona']) f[k].value = me[k] || '';
+      $('#nom').textContent = me.nombre;
+      $('#ids').textContent = `DNI ${me.dni} · Socio N° ${me.socio}`;
+      $('#foto').src = me.foto || 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><text x="5" y="7" font-size="6" text-anchor="middle">👤</text></svg>');
+    })();
+    // Achica la foto en el navegador (máx. 256 px) antes de subirla.
+    $('#file').onchange = (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      const img = new Image();
+      img.onload = () => {
+        const s = Math.min(1, 256 / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        foto = c.toDataURL('image/jpeg', 0.85);
+        $('#foto').src = foto;
+      };
+      img.src = URL.createObjectURL(file);
+    };
+    $('#f').onsubmit = async (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const body = { email: f.email.value, celular: f.celular.value, telefono: f.telefono.value, direccion: f.direccion.value, zona: f.zona.value };
+      if (foto) body.foto = foto;
+      try { await api('/api/me', { method: 'PUT', body }); $('#err').textContent = ''; toast('Perfil guardado ✔'); setTimeout(() => location.reload(), 600); }
+      catch (err) { $('#err').textContent = err.message; }
+    };
+  </script>
+</body>
+</html>

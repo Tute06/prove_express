@@ -1,0 +1,5 @@
+[
+ {"dni":"30111222","socio":"1001","nombre":"Marta Gómez","email":"","celular":"","telefono":"","direccion":"Alvear 120, piso 2","zona":"Pichincha"},
+ {"dni":"28333444","socio":"1002","nombre":"Rubén Ferreyra","email":"","celular":"","telefono":"","direccion":"Mendoza 3400","zona":"Echesortu"},
+ {"dni":"40555666","socio":"1003","nombre":"Lucía Benítez","email":"","celular":"","telefono":"","direccion":"","zona":null}
+]

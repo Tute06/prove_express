@@ -6,10 +6,16 @@ const ai = require('./ai');
 const negocio = require('../data/negocio.json');
 const catalogo = require('../data/catalogo.json');
 const ejemplos = require('../data/ejemplos.json');
+const auth = require('./auth');
+const shop = require('./shop');
 
 const app = express();
 app.set('trust proxy', 1);
-app.use(express.json({ limit: '50kb' }));
+// El guard va antes del static: sin sesión de socio solo se ven login y back-office.
+app.use(auth.guard);
+const json50 = express.json({ limit: '50kb' });
+app.use((req, res, next) => (req.path === '/api/me' ? next() : json50(req, res, next)));
+app.use(shop);
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Límite de llamadas a la IA por IP (la key es compartida).

@@ -4,6 +4,7 @@ const store = require('./store');
 const ai = require('./ai');
 const negocio = require('../data/negocio.json');
 const catalogo = require('../data/catalogo.json');
+const ofertas = require('./ofertas');
 
 const byId = new Map(catalogo.map((p) => [p.id, p]));
 const CANALES = ['whatsapp', 'telefono', 'web'];
@@ -76,9 +77,9 @@ function buildItems(aiItems) {
       productId: prod ? prod.id : null,
       name: prod ? prod.nombre : null,
       unit: prod ? prod.unidad : null,
-      unitPrice: prod ? prod.precio : 0,
+      unitPrice: prod ? ofertas.precioFinal(prod) : 0,
       quantity: qty,
-      subtotal: prod ? Math.round(prod.precio * qty) : 0,
+      subtotal: prod ? Math.round(ofertas.precioFinal(prod) * qty) : 0,
       rawText: it.raw_text,
       note: it.note,
       status,
@@ -199,4 +200,7 @@ function operatorReply(conv, text) {
   store.save();
 }
 
-module.exports = { receive, operatorReply, findConversation, findOrder, setOrderStatus, ESTADOS_PEDIDO, CANALES };
+module.exports = {
+  receive, operatorReply, findConversation, findOrder, setOrderStatus, buildItems, computeTotals,
+  getOrCreateConversation, addMessage, ESTADOS_PEDIDO, CANALES,
+};

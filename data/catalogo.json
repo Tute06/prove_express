@@ -1,53 +1,870 @@
 [
-  {"id":"L01","nombre":"Leche entera La Serenísima 1 L","categoria":"Lácteos","precio":1650,"stock":40,"unidad":"unidad"},
-  {"id":"L02","nombre":"Leche descremada La Serenísima 1 L","categoria":"Lácteos","precio":1700,"stock":0,"unidad":"unidad"},
-  {"id":"L03","nombre":"Leche descremada SanCor 1 L","categoria":"Lácteos","precio":1550,"stock":25,"unidad":"unidad"},
-  {"id":"L04","nombre":"Yogur bebible frutilla Ser 1 L","categoria":"Lácteos","precio":2900,"stock":12,"unidad":"unidad"},
-  {"id":"L05","nombre":"Queso cremoso por kg","categoria":"Lácteos","precio":11500,"stock":8,"unidad":"kg"},
-  {"id":"L06","nombre":"Manteca La Serenísima 200 g","categoria":"Lácteos","precio":3200,"stock":15,"unidad":"unidad"},
-  {"id":"L07","nombre":"Dulce de leche Ilolay 400 g","categoria":"Lácteos","precio":3400,"stock":20,"unidad":"unidad"},
-  {"id":"P01","nombre":"Pan francés por kg","categoria":"Panadería","precio":3800,"stock":30,"unidad":"kg"},
-  {"id":"P02","nombre":"Pan lactal Bimbo grande","categoria":"Panadería","precio":3900,"stock":10,"unidad":"unidad"},
-  {"id":"P03","nombre":"Facturas surtidas (docena)","categoria":"Panadería","precio":7200,"stock":6,"unidad":"docena"},
-  {"id":"A01","nombre":"Arroz largo fino Gallo Oro 1 kg","categoria":"Almacén","precio":2300,"stock":35,"unidad":"unidad"},
-  {"id":"A02","nombre":"Fideos tirabuzón Matarazzo 500 g","categoria":"Almacén","precio":1600,"stock":50,"unidad":"unidad"},
-  {"id":"A03","nombre":"Fideos spaghetti Lucchetti 500 g","categoria":"Almacén","precio":1300,"stock":40,"unidad":"unidad"},
-  {"id":"A04","nombre":"Puré de tomate Arcor 520 g","categoria":"Almacén","precio":1100,"stock":45,"unidad":"unidad"},
-  {"id":"A05","nombre":"Aceite de girasol Natura 1,5 L","categoria":"Almacén","precio":4200,"stock":18,"unidad":"unidad"},
-  {"id":"A06","nombre":"Aceite de oliva Cocinero 500 ml","categoria":"Almacén","precio":8900,"stock":7,"unidad":"unidad"},
-  {"id":"A07","nombre":"Yerba mate Playadito 1 kg","categoria":"Almacén","precio":5600,"stock":22,"unidad":"unidad"},
-  {"id":"A08","nombre":"Yerba mate Taragüí 1 kg","categoria":"Almacén","precio":5100,"stock":0,"unidad":"unidad"},
-  {"id":"A09","nombre":"Azúcar Ledesma 1 kg","categoria":"Almacén","precio":1500,"stock":30,"unidad":"unidad"},
-  {"id":"A10","nombre":"Harina 000 Pureza 1 kg","categoria":"Almacén","precio":1200,"stock":28,"unidad":"unidad"},
-  {"id":"A11","nombre":"Café molido La Virginia 500 g","categoria":"Almacén","precio":7800,"stock":9,"unidad":"unidad"},
-  {"id":"A12","nombre":"Galletitas Oreo 118 g","categoria":"Almacén","precio":1400,"stock":60,"unidad":"unidad"},
-  {"id":"A13","nombre":"Mayonesa Hellmann's 475 g","categoria":"Almacén","precio":3300,"stock":14,"unidad":"unidad"},
-  {"id":"A14","nombre":"Atún al natural Gomes da Costa 170 g","categoria":"Almacén","precio":2800,"stock":20,"unidad":"unidad"},
-  {"id":"A15","nombre":"Lentejas secas 400 g","categoria":"Almacén","precio":1900,"stock":15,"unidad":"unidad"},
-  {"id":"B01","nombre":"Coca-Cola 2,25 L","categoria":"Bebidas","precio":3900,"stock":24,"unidad":"unidad"},
-  {"id":"B02","nombre":"Coca-Cola Zero 2,25 L","categoria":"Bebidas","precio":3900,"stock":4,"unidad":"unidad"},
-  {"id":"B03","nombre":"Sprite 2,25 L","categoria":"Bebidas","precio":3500,"stock":16,"unidad":"unidad"},
-  {"id":"B04","nombre":"Agua mineral Villavicencio 2 L","categoria":"Bebidas","precio":1800,"stock":36,"unidad":"unidad"},
-  {"id":"B05","nombre":"Cerveza Quilmes lata 473 ml","categoria":"Bebidas","precio":1700,"stock":48,"unidad":"unidad"},
-  {"id":"B06","nombre":"Vino tinto Toro 1 L","categoria":"Bebidas","precio":2600,"stock":20,"unidad":"unidad"},
-  {"id":"B07","nombre":"Vino Malbec Alamos 750 ml","categoria":"Bebidas","precio":9500,"stock":6,"unidad":"unidad"},
-  {"id":"B08","nombre":"Jugo en polvo Tang naranja","categoria":"Bebidas","precio":450,"stock":80,"unidad":"unidad"},
-  {"id":"F01","nombre":"Banana por kg","categoria":"Frutas y verduras","precio":2600,"stock":25,"unidad":"kg"},
-  {"id":"F02","nombre":"Manzana roja por kg","categoria":"Frutas y verduras","precio":3200,"stock":20,"unidad":"kg"},
-  {"id":"F03","nombre":"Papa por kg","categoria":"Frutas y verduras","precio":1300,"stock":60,"unidad":"kg"},
-  {"id":"F04","nombre":"Cebolla por kg","categoria":"Frutas y verduras","precio":1200,"stock":40,"unidad":"kg"},
-  {"id":"F05","nombre":"Tomate redondo por kg","categoria":"Frutas y verduras","precio":3500,"stock":15,"unidad":"kg"},
-  {"id":"F06","nombre":"Lechuga criolla (planta)","categoria":"Frutas y verduras","precio":1500,"stock":10,"unidad":"unidad"},
-  {"id":"F07","nombre":"Limón por kg","categoria":"Frutas y verduras","precio":2200,"stock":12,"unidad":"kg"},
-  {"id":"C01","nombre":"Carne picada común por kg","categoria":"Carnicería","precio":8500,"stock":20,"unidad":"kg"},
-  {"id":"C02","nombre":"Asado de tira por kg","categoria":"Carnicería","precio":13900,"stock":15,"unidad":"kg"},
-  {"id":"C03","nombre":"Milanesa de nalga por kg","categoria":"Carnicería","precio":15500,"stock":10,"unidad":"kg"},
-  {"id":"C04","nombre":"Pechuga de pollo por kg","categoria":"Carnicería","precio":7900,"stock":18,"unidad":"kg"},
-  {"id":"C05","nombre":"Huevos blancos (maple x 30)","categoria":"Carnicería","precio":8200,"stock":10,"unidad":"unidad"},
-  {"id":"H01","nombre":"Papel higiénico Higienol x 4","categoria":"Limpieza e higiene","precio":2900,"stock":30,"unidad":"unidad"},
-  {"id":"H02","nombre":"Detergente Magistral 500 ml","categoria":"Limpieza e higiene","precio":2700,"stock":20,"unidad":"unidad"},
-  {"id":"H03","nombre":"Lavandina Ayudín 1 L","categoria":"Limpieza e higiene","precio":1300,"stock":25,"unidad":"unidad"},
-  {"id":"H04","nombre":"Jabón en polvo Ala 800 g","categoria":"Limpieza e higiene","precio":5400,"stock":11,"unidad":"unidad"},
-  {"id":"H05","nombre":"Shampoo Sedal 340 ml","categoria":"Limpieza e higiene","precio":3600,"stock":9,"unidad":"unidad"},
-  {"id":"H06","nombre":"Pañales Pampers G x 30","categoria":"Limpieza e higiene","precio":18900,"stock":5,"unidad":"unidad"}
+ {
+  "id": "L01",
+  "nombre": "Leche entera La Serenísima 1 L",
+  "categoria": "Lácteos",
+  "precio": 1650,
+  "stock": 40,
+  "unidad": "unidad",
+  "ruta": [
+   "Lácteos",
+   "Leches"
+  ],
+  "emoji": "🥛",
+  "ventas": 980
+ },
+ {
+  "id": "L02",
+  "nombre": "Leche descremada La Serenísima 1 L",
+  "categoria": "Lácteos",
+  "precio": 1700,
+  "stock": 0,
+  "unidad": "unidad",
+  "ruta": [
+   "Lácteos",
+   "Leches"
+  ],
+  "emoji": "🥛",
+  "ventas": 410
+ },
+ {
+  "id": "L03",
+  "nombre": "Leche descremada SanCor 1 L",
+  "categoria": "Lácteos",
+  "precio": 1550,
+  "stock": 25,
+  "unidad": "unidad",
+  "ruta": [
+   "Lácteos",
+   "Leches"
+  ],
+  "emoji": "🥛",
+  "ventas": 350
+ },
+ {
+  "id": "L04",
+  "nombre": "Yogur bebible frutilla Ser 1 L",
+  "categoria": "Lácteos",
+  "precio": 2900,
+  "stock": 12,
+  "unidad": "unidad",
+  "ruta": [
+   "Lácteos",
+   "Yogures"
+  ],
+  "emoji": "🍓",
+  "ventas": 260
+ },
+ {
+  "id": "L05",
+  "nombre": "Queso cremoso por kg",
+  "categoria": "Lácteos",
+  "precio": 11500,
+  "stock": 8,
+  "unidad": "kg",
+  "ruta": [
+   "Lácteos",
+   "Quesos"
+  ],
+  "emoji": "🧀",
+  "ventas": 540
+ },
+ {
+  "id": "L06",
+  "nombre": "Manteca La Serenísima 200 g",
+  "categoria": "Lácteos",
+  "precio": 3200,
+  "stock": 15,
+  "unidad": "unidad",
+  "ruta": [
+   "Lácteos",
+   "Mantecas y cremas"
+  ],
+  "emoji": "🧈",
+  "ventas": 300
+ },
+ {
+  "id": "L07",
+  "nombre": "Dulce de leche Ilolay 400 g",
+  "categoria": "Lácteos",
+  "precio": 3400,
+  "stock": 20,
+  "unidad": "unidad",
+  "ruta": [
+   "Lácteos",
+   "Dulce de leche"
+  ],
+  "emoji": "🍯",
+  "ventas": 610
+ },
+ {
+  "id": "P01",
+  "nombre": "Pan francés por kg",
+  "categoria": "Panadería",
+  "precio": 3800,
+  "stock": 30,
+  "unidad": "kg",
+  "ruta": [
+   "Panadería",
+   "Pan"
+  ],
+  "emoji": "🥖",
+  "ventas": 890
+ },
+ {
+  "id": "P02",
+  "nombre": "Pan lactal Bimbo grande",
+  "categoria": "Panadería",
+  "precio": 3900,
+  "stock": 10,
+  "unidad": "unidad",
+  "ruta": [
+   "Panadería",
+   "Pan"
+  ],
+  "emoji": "🍞",
+  "ventas": 330
+ },
+ {
+  "id": "P03",
+  "nombre": "Facturas surtidas (docena)",
+  "categoria": "Panadería",
+  "precio": 7200,
+  "stock": 6,
+  "unidad": "docena",
+  "ruta": [
+   "Panadería",
+   "Facturas"
+  ],
+  "emoji": "🥐",
+  "ventas": 420
+ },
+ {
+  "id": "A01",
+  "nombre": "Arroz largo fino Gallo Oro 1 kg",
+  "categoria": "Almacén",
+  "precio": 2300,
+  "stock": 35,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Arroz y legumbres",
+   "Arroz"
+  ],
+  "emoji": "🍚",
+  "ventas": 520
+ },
+ {
+  "id": "A02",
+  "nombre": "Fideos tirabuzón Matarazzo 500 g",
+  "categoria": "Almacén",
+  "precio": 1600,
+  "stock": 50,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Pastas secas",
+   "Fideos"
+  ],
+  "emoji": "🍝",
+  "ventas": 700
+ },
+ {
+  "id": "A03",
+  "nombre": "Fideos spaghetti Lucchetti 500 g",
+  "categoria": "Almacén",
+  "precio": 1300,
+  "stock": 40,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Pastas secas",
+   "Fideos"
+  ],
+  "emoji": "🍝",
+  "ventas": 640
+ },
+ {
+  "id": "A04",
+  "nombre": "Puré de tomate Arcor 520 g",
+  "categoria": "Almacén",
+  "precio": 1100,
+  "stock": 45,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Conservas",
+   "Tomate"
+  ],
+  "emoji": "🥫",
+  "ventas": 590
+ },
+ {
+  "id": "A05",
+  "nombre": "Aceite de girasol Natura 1,5 L",
+  "categoria": "Almacén",
+  "precio": 4200,
+  "stock": 18,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Aceites y aderezos",
+   "Aceites"
+  ],
+  "emoji": "🫗",
+  "ventas": 480
+ },
+ {
+  "id": "A06",
+  "nombre": "Aceite de oliva Cocinero 500 ml",
+  "categoria": "Almacén",
+  "precio": 8900,
+  "stock": 7,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Aceites y aderezos",
+   "Aceites"
+  ],
+  "emoji": "🫒",
+  "ventas": 120
+ },
+ {
+  "id": "A07",
+  "nombre": "Yerba mate Playadito 1 kg",
+  "categoria": "Almacén",
+  "precio": 5600,
+  "stock": 22,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Infusiones",
+   "Yerba"
+  ],
+  "emoji": "🧉",
+  "ventas": 930
+ },
+ {
+  "id": "A08",
+  "nombre": "Yerba mate Taragüí 1 kg",
+  "categoria": "Almacén",
+  "precio": 5100,
+  "stock": 0,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Infusiones",
+   "Yerba"
+  ],
+  "emoji": "🧉",
+  "ventas": 700
+ },
+ {
+  "id": "A09",
+  "nombre": "Azúcar Ledesma 1 kg",
+  "categoria": "Almacén",
+  "precio": 1500,
+  "stock": 30,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Endulzantes"
+  ],
+  "emoji": "🍬",
+  "ventas": 450
+ },
+ {
+  "id": "A10",
+  "nombre": "Harina 000 Pureza 1 kg",
+  "categoria": "Almacén",
+  "precio": 1200,
+  "stock": 28,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Harinas"
+  ],
+  "emoji": "🌾",
+  "ventas": 380
+ },
+ {
+  "id": "A11",
+  "nombre": "Café molido La Virginia 500 g",
+  "categoria": "Almacén",
+  "precio": 7800,
+  "stock": 9,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Infusiones",
+   "Café"
+  ],
+  "emoji": "☕",
+  "ventas": 210
+ },
+ {
+  "id": "A12",
+  "nombre": "Galletitas Oreo 118 g",
+  "categoria": "Almacén",
+  "precio": 1400,
+  "stock": 60,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Galletitas"
+  ],
+  "emoji": "🍪",
+  "ventas": 560
+ },
+ {
+  "id": "A13",
+  "nombre": "Mayonesa Hellmann's 475 g",
+  "categoria": "Almacén",
+  "precio": 3300,
+  "stock": 14,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Aceites y aderezos",
+   "Aderezos"
+  ],
+  "emoji": "🥚",
+  "ventas": 290
+ },
+ {
+  "id": "A14",
+  "nombre": "Atún al natural Gomes da Costa 170 g",
+  "categoria": "Almacén",
+  "precio": 2800,
+  "stock": 20,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Conservas",
+   "Pescado"
+  ],
+  "emoji": "🐟",
+  "ventas": 230
+ },
+ {
+  "id": "A15",
+  "nombre": "Lentejas secas 400 g",
+  "categoria": "Almacén",
+  "precio": 1900,
+  "stock": 15,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Arroz y legumbres",
+   "Legumbres"
+  ],
+  "emoji": "🫘",
+  "ventas": 140
+ },
+ {
+  "id": "B01",
+  "nombre": "Coca-Cola 2,25 L",
+  "categoria": "Bebidas",
+  "precio": 3900,
+  "stock": 24,
+  "unidad": "unidad",
+  "ruta": [
+   "Bebidas",
+   "Gaseosas"
+  ],
+  "emoji": "🥤",
+  "ventas": 1020
+ },
+ {
+  "id": "B02",
+  "nombre": "Coca-Cola Zero 2,25 L",
+  "categoria": "Bebidas",
+  "precio": 3900,
+  "stock": 4,
+  "unidad": "unidad",
+  "ruta": [
+   "Bebidas",
+   "Gaseosas"
+  ],
+  "emoji": "🥤",
+  "ventas": 380
+ },
+ {
+  "id": "B03",
+  "nombre": "Sprite 2,25 L",
+  "categoria": "Bebidas",
+  "precio": 3500,
+  "stock": 16,
+  "unidad": "unidad",
+  "ruta": [
+   "Bebidas",
+   "Gaseosas"
+  ],
+  "emoji": "🥤",
+  "ventas": 300
+ },
+ {
+  "id": "B04",
+  "nombre": "Agua mineral Villavicencio 2 L",
+  "categoria": "Bebidas",
+  "precio": 1800,
+  "stock": 36,
+  "unidad": "unidad",
+  "ruta": [
+   "Bebidas",
+   "Aguas"
+  ],
+  "emoji": "💧",
+  "ventas": 520
+ },
+ {
+  "id": "B05",
+  "nombre": "Cerveza Quilmes lata 473 ml",
+  "categoria": "Bebidas",
+  "precio": 1700,
+  "stock": 48,
+  "unidad": "unidad",
+  "ruta": [
+   "Bebidas",
+   "Cervezas"
+  ],
+  "emoji": "🍺",
+  "ventas": 810
+ },
+ {
+  "id": "B06",
+  "nombre": "Vino tinto Toro 1 L",
+  "categoria": "Bebidas",
+  "precio": 2600,
+  "stock": 20,
+  "unidad": "unidad",
+  "ruta": [
+   "Bebidas",
+   "Vinos"
+  ],
+  "emoji": "🍷",
+  "ventas": 470
+ },
+ {
+  "id": "B07",
+  "nombre": "Vino Malbec Alamos 750 ml",
+  "categoria": "Bebidas",
+  "precio": 9500,
+  "stock": 6,
+  "unidad": "unidad",
+  "ruta": [
+   "Bebidas",
+   "Vinos"
+  ],
+  "emoji": "🍷",
+  "ventas": 150
+ },
+ {
+  "id": "B08",
+  "nombre": "Jugo en polvo Tang naranja",
+  "categoria": "Bebidas",
+  "precio": 450,
+  "stock": 80,
+  "unidad": "unidad",
+  "ruta": [
+   "Bebidas",
+   "Jugos"
+  ],
+  "emoji": "🍊",
+  "ventas": 360
+ },
+ {
+  "id": "F01",
+  "nombre": "Banana por kg",
+  "categoria": "Frutas y verduras",
+  "precio": 2600,
+  "stock": 25,
+  "unidad": "kg",
+  "ruta": [
+   "Frutas y verduras",
+   "Frutas"
+  ],
+  "emoji": "🍌",
+  "ventas": 690
+ },
+ {
+  "id": "F02",
+  "nombre": "Manzana roja por kg",
+  "categoria": "Frutas y verduras",
+  "precio": 3200,
+  "stock": 20,
+  "unidad": "kg",
+  "ruta": [
+   "Frutas y verduras",
+   "Frutas"
+  ],
+  "emoji": "🍎",
+  "ventas": 400
+ },
+ {
+  "id": "F03",
+  "nombre": "Papa por kg",
+  "categoria": "Frutas y verduras",
+  "precio": 1300,
+  "stock": 60,
+  "unidad": "kg",
+  "ruta": [
+   "Frutas y verduras",
+   "Verduras"
+  ],
+  "emoji": "🥔",
+  "ventas": 760
+ },
+ {
+  "id": "F04",
+  "nombre": "Cebolla por kg",
+  "categoria": "Frutas y verduras",
+  "precio": 1200,
+  "stock": 40,
+  "unidad": "kg",
+  "ruta": [
+   "Frutas y verduras",
+   "Verduras"
+  ],
+  "emoji": "🧅",
+  "ventas": 600
+ },
+ {
+  "id": "F05",
+  "nombre": "Tomate redondo por kg",
+  "categoria": "Frutas y verduras",
+  "precio": 3500,
+  "stock": 15,
+  "unidad": "kg",
+  "ruta": [
+   "Frutas y verduras",
+   "Verduras"
+  ],
+  "emoji": "🍅",
+  "ventas": 580
+ },
+ {
+  "id": "F06",
+  "nombre": "Lechuga criolla (planta)",
+  "categoria": "Frutas y verduras",
+  "precio": 1500,
+  "stock": 10,
+  "unidad": "unidad",
+  "ruta": [
+   "Frutas y verduras",
+   "Verduras"
+  ],
+  "emoji": "🥬",
+  "ventas": 240
+ },
+ {
+  "id": "F07",
+  "nombre": "Limón por kg",
+  "categoria": "Frutas y verduras",
+  "precio": 2200,
+  "stock": 12,
+  "unidad": "kg",
+  "ruta": [
+   "Frutas y verduras",
+   "Frutas"
+  ],
+  "emoji": "🍋",
+  "ventas": 200
+ },
+ {
+  "id": "C01",
+  "nombre": "Carne picada común por kg",
+  "categoria": "Carnicería",
+  "precio": 8500,
+  "stock": 20,
+  "unidad": "kg",
+  "ruta": [
+   "Carnicería",
+   "Vacuna"
+  ],
+  "emoji": "🥩",
+  "ventas": 870
+ },
+ {
+  "id": "C02",
+  "nombre": "Asado de tira por kg",
+  "categoria": "Carnicería",
+  "precio": 13900,
+  "stock": 15,
+  "unidad": "kg",
+  "ruta": [
+   "Carnicería",
+   "Vacuna"
+  ],
+  "emoji": "🍖",
+  "ventas": 510
+ },
+ {
+  "id": "C03",
+  "nombre": "Milanesa de nalga por kg",
+  "categoria": "Carnicería",
+  "precio": 15500,
+  "stock": 10,
+  "unidad": "kg",
+  "ruta": [
+   "Carnicería",
+   "Vacuna"
+  ],
+  "emoji": "🥩",
+  "ventas": 460
+ },
+ {
+  "id": "C04",
+  "nombre": "Pechuga de pollo por kg",
+  "categoria": "Carnicería",
+  "precio": 7900,
+  "stock": 18,
+  "unidad": "kg",
+  "ruta": [
+   "Carnicería",
+   "Pollo"
+  ],
+  "emoji": "🍗",
+  "ventas": 620
+ },
+ {
+  "id": "C05",
+  "nombre": "Huevos blancos (maple x 30)",
+  "categoria": "Carnicería",
+  "precio": 8200,
+  "stock": 10,
+  "unidad": "unidad",
+  "ruta": [
+   "Carnicería",
+   "Huevos"
+  ],
+  "emoji": "🥚",
+  "ventas": 740
+ },
+ {
+  "id": "H01",
+  "nombre": "Papel higiénico Higienol x 4",
+  "categoria": "Limpieza",
+  "precio": 2900,
+  "stock": 30,
+  "unidad": "unidad",
+  "ruta": [
+   "Limpieza",
+   "Papel"
+  ],
+  "emoji": "🧻",
+  "ventas": 650
+ },
+ {
+  "id": "H02",
+  "nombre": "Detergente Magistral 500 ml",
+  "categoria": "Limpieza",
+  "precio": 2700,
+  "stock": 20,
+  "unidad": "unidad",
+  "ruta": [
+   "Limpieza",
+   "Detergentes"
+  ],
+  "emoji": "🧴",
+  "ventas": 420
+ },
+ {
+  "id": "H03",
+  "nombre": "Lavandina Ayudín 1 L",
+  "categoria": "Limpieza",
+  "precio": 1300,
+  "stock": 25,
+  "unidad": "unidad",
+  "ruta": [
+   "Limpieza",
+   "Lavandinas"
+  ],
+  "emoji": "🧪",
+  "ventas": 390
+ },
+ {
+  "id": "H04",
+  "nombre": "Jabón en polvo Ala 800 g",
+  "categoria": "Limpieza",
+  "precio": 5400,
+  "stock": 11,
+  "unidad": "unidad",
+  "ruta": [
+   "Limpieza",
+   "Ropa"
+  ],
+  "emoji": "🧺",
+  "ventas": 270
+ },
+ {
+  "id": "H05",
+  "nombre": "Shampoo Sedal 340 ml",
+  "categoria": "Perfumería",
+  "precio": 3600,
+  "stock": 9,
+  "unidad": "unidad",
+  "ruta": [
+   "Perfumería",
+   "Cuidado del cabello"
+  ],
+  "emoji": "🧴",
+  "ventas": 180
+ },
+ {
+  "id": "H06",
+  "nombre": "Pañales Pampers G x 30",
+  "categoria": "Perfumería",
+  "precio": 18900,
+  "stock": 5,
+  "unidad": "unidad",
+  "ruta": [
+   "Perfumería",
+   "Bebés"
+  ],
+  "emoji": "👶",
+  "ventas": 160
+ },
+ {
+  "id": "A16",
+  "nombre": "Fideos moñitos Matarazzo 500 g",
+  "precio": 1600,
+  "stock": 30,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Pastas secas",
+   "Fideos"
+  ],
+  "emoji": "🍝",
+  "ventas": 310,
+  "categoria": "Almacén"
+ },
+ {
+  "id": "A17",
+  "nombre": "Ñoquis de papa secos Don Vicente 500 g",
+  "precio": 2100,
+  "stock": 12,
+  "unidad": "unidad",
+  "ruta": [
+   "Almacén",
+   "Pastas secas",
+   "Ñoquis"
+  ],
+  "emoji": "🥟",
+  "ventas": 90,
+  "categoria": "Almacén"
+ },
+ {
+  "id": "H07",
+  "nombre": "Detergente Cif ultra 750 ml",
+  "precio": 3900,
+  "stock": 14,
+  "unidad": "unidad",
+  "ruta": [
+   "Limpieza",
+   "Detergentes"
+  ],
+  "emoji": "🧴",
+  "ventas": 200,
+  "categoria": "Limpieza"
+ },
+ {
+  "id": "H08",
+  "nombre": "Limpiador de pisos Procenex 900 ml",
+  "precio": 2400,
+  "stock": 18,
+  "unidad": "unidad",
+  "ruta": [
+   "Limpieza",
+   "Pisos"
+  ],
+  "emoji": "🧽",
+  "ventas": 230,
+  "categoria": "Limpieza"
+ },
+ {
+  "id": "H09",
+  "nombre": "Esponja Mortimer x 3",
+  "precio": 1500,
+  "stock": 25,
+  "unidad": "unidad",
+  "ruta": [
+   "Limpieza",
+   "Accesorios"
+  ],
+  "emoji": "🧽",
+  "ventas": 170,
+  "categoria": "Limpieza"
+ },
+ {
+  "id": "H10",
+  "nombre": "Desodorante Rexona aerosol 150 ml",
+  "precio": 3700,
+  "stock": 16,
+  "unidad": "unidad",
+  "ruta": [
+   "Perfumería",
+   "Desodorantes"
+  ],
+  "emoji": "🌬️",
+  "ventas": 260,
+  "categoria": "Perfumería"
+ },
+ {
+  "id": "H11",
+  "nombre": "Pasta dental Colgate 90 g",
+  "precio": 2300,
+  "stock": 30,
+  "unidad": "unidad",
+  "ruta": [
+   "Perfumería",
+   "Higiene bucal"
+  ],
+  "emoji": "🪥",
+  "ventas": 340,
+  "categoria": "Perfumería"
+ },
+ {
+  "id": "P04",
+  "nombre": "Prepizza x 2",
+  "precio": 3300,
+  "stock": 10,
+  "unidad": "unidad",
+  "ruta": [
+   "Panadería",
+   "Pizzas y tapas"
+  ],
+  "emoji": "🍕",
+  "ventas": 280,
+  "categoria": "Panadería"
+ },
+ {
+  "id": "P05",
+  "nombre": "Tapas de empanadas criollas x 12",
+  "precio": 1900,
+  "stock": 20,
+  "unidad": "unidad",
+  "ruta": [
+   "Panadería",
+   "Pizzas y tapas"
+  ],
+  "emoji": "🥟",
+  "ventas": 330,
+  "categoria": "Panadería"
+ },
+ {
+  "id": "C06",
+  "nombre": "Chorizo puro cerdo por kg",
+  "precio": 9800,
+  "stock": 12,
+  "unidad": "kg",
+  "ruta": [
+   "Carnicería",
+   "Cerdo"
+  ],
+  "emoji": "🌭",
+  "ventas": 390,
+  "categoria": "Carnicería"
+ }
 ]
