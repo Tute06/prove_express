@@ -98,7 +98,7 @@ function iaBox(el) {
       const r = await api('/api/ia/lista', { method: 'POST', body: { text } });
       items = r.items;
       const st = { ok: '', sin_stock: '<span class="pill danger">sin stock</span>', a_definir: '<span class="pill warn">no encontrado</span>', no_existe: '<span class="pill danger">no existe</span>' };
-      $('#iaRes').innerHTML = `<div class="summary">🤖 ${esc(r.reply)} <small>(${(r.meta.ms / 1000).toFixed(1)} s)</small></div>
+      $('#iaRes').innerHTML = `<div class="summary">🤖 ${esc(r.reply)}</div>
         <table>${items.map((i, n) => `<tr>
           <td><input type="checkbox" data-i="${n}" ${i.status === 'ok' ? 'checked' : ''} ${i.productId ? '' : 'disabled'}></td>
           <td><div class="mini">${thumb(i)}</div></td>

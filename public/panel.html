@@ -5,29 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Provee Express · Mesa de pedidos</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tienda.css">
 </head>
-<body>
-  <header class="top">
-    <div>
-      <h1>🛒 Provee Express · Mesa de pedidos con IA</h1>
-      <div class="sub">Envíos a domicilio · Provee Express</div>
-    </div>
-    <div class="spacer"></div>
-    <span id="aiStatus" class="pill muted">IA …</span>
-    <a href="/" target="_blank">Tienda de socios ↗</a>
-    <a href="chat.html" target="_blank">Abrir chat del cliente (WhatsApp simulado) ↗</a>
+<body class="shop admin">
+  <header class="nav">
+    <a class="logo" href="/panel.html"><span class="logo-mark">PE</span><span>Provee Express<small>Mesa de pedidos · Envíos</small></span></a>
+    <div style="flex:1"></div>
+    <nav class="nav-links">
+      <span id="aiStatus" class="pill">IA …</span>
+      <a class="hide-sm" href="/" target="_blank">Tienda de socios ↗</a>
+      <a class="cart-pill" href="chat.html" target="_blank">💬 Chat cliente (WhatsApp simulado)</a>
+    </nav>
   </header>
 
+  <main>
   <section class="kpis" id="kpis"></section>
-
-  <main class="grid">
+  <section class="grid">
     <section>
       <div class="card">
-        <h2>📥 Bandeja unificada <span class="pill count" id="inboxCount">0</span></h2>
+        <h2><span class="eyebrow" style="display:block;width:100%">Todos los canales</span>Bandeja unificada <span class="pill count" id="inboxCount">0</span></h2>
         <div class="inbox" id="inbox"></div>
       </div>
       <div class="card" style="margin-top:.8rem">
-        <h2>✍️ Cargar mensaje de otro canal</h2>
+        <h2>Cargar mensaje de otro canal</h2>
         <form class="ingest" id="ingest">
           <select name="channel">
             <option value="whatsapp">WhatsApp (pegar mensaje)</option>
@@ -49,10 +49,12 @@
     </section>
 
     <section class="card">
-      <h2>📦 Pedidos</h2>
+      <h2>Pedidos</h2>
       <div class="board" id="board"></div>
     </section>
+  </section>
   </main>
+  <footer class="foot"><span></span><span class="brand">Provee Express · 2026</span><span id="clock"></span></footer>
   <div class="toast" id="toast"></div>
   <script src="panel.js"></script>
 </body>

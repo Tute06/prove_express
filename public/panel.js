@@ -115,8 +115,7 @@ function renderDetail() {
   const [lbl, cls] = ESTADO_CONV[c.status] || [c.status, ''];
   const msgs = c.messages.map((m) => {
     const quien = m.from === 'cliente' ? (c.customer.name || 'Cliente') : m.from === 'bot' ? (m.suggested ? '🤖 IA · respuesta sugerida' : m.fallback ? '🤖 aviso automático' : '🤖 IA') : '🧑 Operador';
-    const meta = m.meta ? ` · ${(m.meta.ms / 1000).toFixed(1)} s` : '';
-    return `<div class="msg ${m.from}">${esc(m.text)}<span class="meta">${quien} · ${hora(m.at)}${meta}</span></div>`;
+    return `<div class="msg ${m.from}">${esc(m.text)}<span class="meta">${quien} · ${hora(m.at)}</span></div>`;
   }).join('');
   const sugerida = [...c.messages].reverse().find((m) => m.from === 'bot' && m.suggested);
   $('#detail').innerHTML = `
@@ -153,7 +152,6 @@ async function renderKpis() {
     [m.mensajesCliente, 'mensajes recibidos'],
     [m.respuestasIA, 'respondidos por IA'],
     [m.sinResponder, 'sin responder'],
-    [m.primeraRespuestaSeg == null ? '—' : m.primeraRespuestaSeg + ' s', '1ª respuesta (prom.)'],
     [m.pedidosConfirmados + ' / ' + m.pedidos, 'pedidos confirmados'],
     [money(m.facturacion), 'facturación confirmada'],
   ];
@@ -231,6 +229,10 @@ document.addEventListener('submit', async (e) => {
   const s = $('#aiStatus');
   s.textContent = h.ai ? `IA activa · ${h.model}` : 'IA sin key: modo solo registro';
   s.className = 'pill ' + (h.ai ? '' : 'danger');
+  const clock = $('#clock');
+  const tick = () => { clock.textContent = new Date().toLocaleString('es-AR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }); };
+  tick();
+  setInterval(tick, 1000);
   state.ejemplos = await api('/api/ejemplos');
   $('#examples').innerHTML = '<small style="color:var(--muted);width:100%">Ejemplos:</small>' + state.ejemplos.map((x, i) => `<button type="button" class="small ghost" data-ex="${i}">${esc(x.titulo)}</button>`).join('');
   await refresh();

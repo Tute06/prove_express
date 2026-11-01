@@ -53,7 +53,7 @@
             const s = await api('/api/ia/similares', { method: 'POST', body: { q: $('#q').value.trim(), sinStock: r.map((p) => p.id) } });
             if (ultima !== q || !$('#sim')) return;
             $('#sim').innerHTML = `<span class="eyebrow" style="color:var(--accent)">Asistente con IA</span><h3><span class="spark">✦</span> Te sugerimos estos productos</h3>
-              <div class="summary">${esc(s.reply)} <small>${s.meta.fallback ? '' : `(${(s.meta.ms / 1000).toFixed(1)} s)`}</small></div>
+              <div class="summary">${esc(s.reply)}</div>
               <div class="row-scroll">${s.items.map((p) => prodCard(p, `<span class="why">${esc(p.motivo)}</span>`)).join('') || '<small>Nada parecido en el catálogo. Probá con otra palabra.</small>'}</div>`;
           } catch (err) {
             if ($('#sim')) $('#sim').innerHTML = `<small class="err">${esc(err.message)}</small>`;

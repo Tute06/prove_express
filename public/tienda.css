@@ -223,3 +223,44 @@ body.shop > main { flex: 1; width: 100%; }
 .cart-table .e.foto { background: #fff; border: 1px solid var(--line); overflow: hidden; }
 .cart-table .e img, .mini img { width: 100%; height: 100%; object-fit: contain; }
 .mini { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; font-size: 1.5rem; background: #fff; border: 1px solid var(--line); overflow: hidden; }
+
+/* ---------- Panel administrativo (mismo sistema visual que la tienda) ---------- */
+body.admin .kpis { max-width: 1560px; margin: 0 auto; padding: 1.2rem 1.4rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .9rem; }
+body.admin .kpi { background: #fff; border: 0; border-radius: var(--r-md); box-shadow: var(--shadow); padding: 1rem 1.1rem; }
+body.admin .kpi .v { font-size: 1.8rem; font-weight: 800; letter-spacing: -.04em; }
+body.admin .kpi .l { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+body.admin .kpi:nth-child(3) { background: var(--accent); }
+body.admin .kpi:nth-child(3) .l { color: var(--accent-ink); }
+body.admin .kpi:last-child { background: var(--navy); color: #fff; }
+body.admin .kpi:last-child .l { color: #9fb3d1; }
+body.admin .grid { max-width: 1560px; margin: 0 auto; display: grid; grid-template-columns: 360px 1fr 390px; gap: 1rem; padding: 1rem 1.4rem 2rem; align-items: start; }
+@media (max-width: 1150px) { body.admin .grid { grid-template-columns: 1fr; } }
+body.admin .card { background: #fff; border: 0; border-radius: var(--r-lg); box-shadow: var(--shadow); padding: 1.2rem; }
+body.admin .card h2 { font-size: 1.15rem; font-weight: 800; letter-spacing: -.03em; flex-wrap: wrap; margin-bottom: .8rem; }
+body.admin .card h2 small { font-weight: 500; }
+body.admin .inbox { gap: .55rem; }
+body.admin .conv { border: 1px solid var(--line); border-radius: 16px; padding: .75rem .85rem; transition: border-color .15s, transform .15s; }
+body.admin .conv:hover { border-color: var(--navy-2); transform: translateY(-1px); }
+body.admin .conv.active { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(255,210,63,.55); }
+body.admin .conv.alert { border-left: 4px solid var(--coral); }
+body.admin .conv .wait { color: #c2361b; }
+body.admin .pill.muted { background: #eef0f4; color: var(--muted); }
+body.admin .thread { background: var(--cream); border-radius: 18px; padding: .8rem; gap: .5rem; max-height: 48vh; }
+body.admin .msg { border-radius: 16px; padding: .55rem .8rem; box-shadow: 0 1px 2px rgba(11,37,69,.06); }
+body.admin .msg.cliente { background: #fff; border-bottom-left-radius: 4px; }
+body.admin .msg.bot { background: #e3ecfa; border-bottom-right-radius: 4px; }
+body.admin .msg.operador { background: #fff3c4; border-bottom-right-radius: 4px; }
+body.admin #reply input { border-radius: 999px; }
+body.admin button { border-radius: 999px; background: var(--navy); }
+body.admin button.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+body.admin button.ghost:hover { border-color: var(--navy); }
+body.admin .order { border: 1px solid var(--line); border-radius: 18px; padding: .9rem; margin-top: .8rem; }
+body.admin .order td { border-bottom: 1px solid var(--line); padding: .35rem .3rem; }
+body.admin .order .tot td { font-size: 1.05rem; }
+body.admin .col h3 { font-size: .72rem; font-weight: 800; letter-spacing: .1em; color: var(--muted); margin: .6rem 0 .4rem; }
+body.admin .ocard { border: 1px solid var(--line); border-radius: 16px; padding: .65rem .8rem; box-shadow: none; transition: border-color .15s; }
+body.admin .ocard:hover { border-color: var(--navy-2); }
+body.admin form.ingest select, body.admin form.ingest input, body.admin form.ingest textarea { border-radius: 14px; }
+body.admin form.ingest button[type=submit] { background: var(--accent); color: var(--accent-ink); font-weight: 800; padding: .75rem; }
+body.admin .examples .small { font-size: .8rem; }
+body.admin #detail .empty { padding: 4rem 1rem; }

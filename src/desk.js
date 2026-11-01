@@ -62,7 +62,9 @@ function buildItems(aiItems) {
   const m = ofertas.mapas();
   return aiItems.map((it) => {
     const prod = db.producto(it.product_id);
-    const alt = it.alternative_product_id !== it.product_id ? db.producto(it.alternative_product_id) : null;
+    // El reemplazo propuesto tiene que existir, ser distinto y tener stock.
+    const altP = it.alternative_product_id !== it.product_id ? db.producto(it.alternative_product_id) : null;
+    const alt = altP && altP.stock > 0 ? altP : null;
     const qty = Number(it.quantity) > 0 ? Number(it.quantity) : 1;
     let status = 'ok';
     if (!prod) status = it.product_id ? 'no_existe' : 'a_definir';
