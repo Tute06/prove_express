@@ -120,7 +120,7 @@ router.post('/api/carrito', express.json(), (req, res) => {
 });
 
 router.get('/api/negocio-publico', (req, res) => {
-  res.json({ zonas: negocio.zonas, franjas: negocio.franjas_horarias, pagos: negocio.formas_pago, minimo: negocio.pedido_minimo, envioGratis: negocio.envio_gratis_desde });
+  res.json({ zonas: negocio.zonas, franjas: negocio.franjas_horarias, pagos: negocio.formas_pago, descuentos: negocio.descuentos_pago || {}, minimo: negocio.pedido_minimo, envioGratis: negocio.envio_gratis_desde });
 });
 
 // Checkout: en una sola transacción crea el pedido, descuenta stock y vacía el carrito.
@@ -214,6 +214,10 @@ router.post('/api/ia/lista', express.json(), async (req, res) => {
         + (noEsta.length ? ` No encontramos: ${noEsta.map((i) => `“${i.rawText}”`).join(', ')}.` : '')
         + (sinStock.length ? ` Sin stock: ${sinStock.map((i) => i.name).join(', ')}${sinStock.some((i) => i.alternativeId) ? ' (te propusimos un reemplazo)' : ''}.` : '');
     }
+    // Con el carrito armado, recordar el descuento por forma de pago con el ahorro calculado.
+    const subOk = items.filter((i) => i.status === 'ok').reduce((t, i) => t + i.subtotal, 0);
+    const [medio, pct] = Object.entries(negocio.descuentos_pago || {}).sort((a, b) => b[1] - a[1])[0] || [];
+    if (subOk && pct) reply += ` 💡 Pagando en ${medio} tenés ${pct}% de descuento: ahorrás $${Math.round(subOk * pct / 100).toLocaleString('es-AR')} sobre estos productos.`;
     res.json({ reply, items, meta: out._meta });
   } catch (err) {
     console.error('[ia/lista]', err.message);

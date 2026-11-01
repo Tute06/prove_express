@@ -6,22 +6,65 @@
   "pedido_minimo": 15000,
   "envio_gratis_desde": 60000,
   "corte_mismo_dia": "Los pedidos confirmados antes de las 17 h se entregan en el día; después, al día siguiente.",
-  "franjas_horarias": ["9 a 12 h", "12 a 15 h", "15 a 18 h", "18 a 21 h"],
-  "formas_pago": ["efectivo", "transferencia", "tarjeta_debito", "tarjeta_credito", "mercado_pago"],
+  "franjas_horarias": [
+    "9 a 12 h",
+    "12 a 15 h",
+    "15 a 18 h",
+    "18 a 21 h"
+  ],
+  "formas_pago": [
+    "efectivo",
+    "transferencia",
+    "tarjeta_debito",
+    "tarjeta_credito",
+    "mercado_pago"
+  ],
   "zonas": [
-    { "zona": "Centro", "costo_envio": 2500 },
-    { "zona": "Pichincha", "costo_envio": 2500 },
-    { "zona": "Echesortu", "costo_envio": 3000 },
-    { "zona": "Abasto", "costo_envio": 3000 },
-    { "zona": "Alberdi", "costo_envio": 4000 },
-    { "zona": "Fisherton", "costo_envio": 5000 },
-    { "zona": "República de la Sexta", "costo_envio": 3500 },
-    { "zona": "Barrio Martin", "costo_envio": 2500 }
+    {
+      "zona": "Centro",
+      "costo_envio": 2500
+    },
+    {
+      "zona": "Pichincha",
+      "costo_envio": 2500
+    },
+    {
+      "zona": "Echesortu",
+      "costo_envio": 3000
+    },
+    {
+      "zona": "Abasto",
+      "costo_envio": 3000
+    },
+    {
+      "zona": "Alberdi",
+      "costo_envio": 4000
+    },
+    {
+      "zona": "Fisherton",
+      "costo_envio": 5000
+    },
+    {
+      "zona": "República de la Sexta",
+      "costo_envio": 3500
+    },
+    {
+      "zona": "Barrio Martin",
+      "costo_envio": 2500
+    }
   ],
   "politicas": [
     "Si un producto no tiene stock se ofrece un reemplazo similar; nunca se reemplaza sin el OK del cliente.",
     "Frescos (carnes, frutas y verduras) se venden por kilo; el peso final puede variar ±10 % y se cobra lo real.",
     "Cambios y devoluciones: hasta 48 h con ticket, salvo frescos.",
-    "Fuera de las zonas listadas no hacemos envíos; el cliente puede retirar en el local (Av. Pellegrini 1500)."
-  ]
+    "Fuera de las zonas listadas no hacemos envíos; el cliente puede retirar en el local (Av. Pellegrini 1500).",
+    "Descuentos por forma de pago sobre el total de productos (no sobre el envío): 10 % pagando en efectivo y 5 % con transferencia."
+  ],
+  "descuentos_pago": {
+    "efectivo": 10,
+    "transferencia": 5,
+    "tarjeta_debito": 0,
+    "tarjeta_credito": 0,
+    "mercado_pago": 0
+  }
 }

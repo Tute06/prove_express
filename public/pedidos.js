@@ -51,6 +51,7 @@ function tarjeta(o) {
     ${o.problems?.length ? `<div class="problems">${o.problems.map((p) => `<span class="pill warn">${esc(p)}</span>`).join('')}</div>` : ''}
     <table>${items}
       <tr><td></td><td>Subtotal</td><td class="num">${money(o.subtotal)}</td></tr>
+      ${o.paymentDiscount ? `<tr><td></td><td>Descuento ${esc(PAGO[o.paymentMethod] || o.paymentMethod)} (${o.paymentDiscountPct}%)</td><td class="num">−${money(o.paymentDiscount)}</td></tr>` : ''}
       <tr><td></td><td>Envío</td><td class="num">${o.shippingCost === 0 ? 'Gratis' : money(o.shippingCost)}</td></tr>
       <tr class="tot"><td></td><td><b>Total</b></td><td class="num"><b>${money(o.total)}</b></td></tr>
     </table>

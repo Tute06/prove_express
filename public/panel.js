@@ -95,6 +95,7 @@ function renderOrder(o, withActions = true) {
     ${o.problems?.length ? `<div class="problems">${o.problems.map((p) => `<span class="pill warn">${esc(p)}</span>`).join('')}</div>` : ''}
     <table>${items}
       <tr><td></td><td>Subtotal</td><td class="num">${money(o.subtotal)}</td></tr>
+      ${o.paymentDiscount ? `<tr><td></td><td>Descuento ${esc((o.paymentMethod || '').replace('_', ' '))} (${o.paymentDiscountPct}%)</td><td class="num">−${money(o.paymentDiscount)}</td></tr>` : ''}
       <tr><td></td><td>Envío ${o.zone ? '(' + esc(o.zone) + ')' : ''}</td><td class="num">${o.shippingCost === 0 ? 'gratis' : money(o.shippingCost)}</td></tr>
       <tr class="tot"><td></td><td>Total</td><td class="num">${money(o.total)}</td></tr>
     </table>

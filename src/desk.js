@@ -92,7 +92,10 @@ function computeTotals(order) {
   order.subtotal = valid.reduce((s, i) => s + i.subtotal, 0);
   const cost = zoneCost(order.zone);
   order.shippingCost = cost == null ? null : order.subtotal >= negocio.envio_gratis_desde ? 0 : cost;
-  order.total = order.subtotal + (order.shippingCost || 0);
+  // Descuento por forma de pago (sobre los productos, no sobre el envío).
+  order.paymentDiscountPct = negocio.descuentos_pago?.[order.paymentMethod] || 0;
+  order.paymentDiscount = Math.round(order.subtotal * order.paymentDiscountPct / 100);
+  order.total = order.subtotal - order.paymentDiscount + (order.shippingCost || 0);
   // Problemas que impiden despachar, calculados por el servidor (no se confía solo en la IA).
   const problems = [];
   if (!valid.length) problems.push('sin ítems válidos');

@@ -114,6 +114,11 @@ CREATE INDEX IF NOT EXISTS ix_conv_tel ON conversaciones(cliente_telefono, canal
 
 // Transacción; si ya hay una abierta, se suma a ella.
 let enTx = false;
+// Migraciones simples: columnas agregadas después de la primera versión.
+for (const col of ['descuento_pago_pct INTEGER', 'descuento_pago INTEGER']) {
+  try { db.exec(`ALTER TABLE pedidos ADD COLUMN ${col}`); } catch { /* ya existe */ }
+}
+
 function tx(fn) {
   if (enTx) return fn();
   db.exec('BEGIN');
@@ -297,7 +302,7 @@ function orderFromRow(r, items, historial) {
     })),
     address: r.direccion, zone: r.zona, deliveryDay: r.dia, deliverySlot: r.franja, paymentMethod: r.forma_pago, notes: r.notas,
     summary: r.resumen, missingFields: JSON.parse(r.faltantes || '[]'), problems: JSON.parse(r.problemas || '[]'),
-    subtotal: r.subtotal, shippingCost: r.costo_envio, total: r.total, status: r.estado,
+    subtotal: r.subtotal, shippingCost: r.costo_envio, paymentDiscountPct: r.descuento_pago_pct || 0, paymentDiscount: r.descuento_pago || 0, total: r.total, status: r.estado,
     history: historial.map((h) => ({ id: h.id, status: h.estado, at: h.fecha, by: h.por })),
     createdAt: r.creado, updatedAt: r.actualizado,
   };
@@ -327,11 +332,12 @@ function crearPedido(o) {
 function guardarPedido(o) {
   const run = () => {
     db.prepare(`UPDATE pedidos SET cliente_nombre = ?, cliente_telefono = ?, cliente_dni = ?, cliente_socio = ?, direccion = ?, zona = ?, dia = ?,
-      franja = ?, forma_pago = ?, notas = ?, resumen = ?, faltantes = ?, problemas = ?, subtotal = ?, costo_envio = ?, total = ?, estado = ?, actualizado = ?
+      franja = ?, forma_pago = ?, notas = ?, resumen = ?, faltantes = ?, problemas = ?, subtotal = ?, costo_envio = ?, descuento_pago_pct = ?, descuento_pago = ?, total = ?, estado = ?, actualizado = ?
       WHERE id = ?`).run(
       o.customer?.name ?? null, o.customer?.phone ?? null, o.customer?.dni ?? null, o.customer?.socio ?? null, o.address ?? null, o.zone ?? null,
       o.deliveryDay ?? null, o.deliverySlot ?? null, o.paymentMethod ?? null, o.notes ?? null, o.summary ?? null,
-      JSON.stringify(o.missingFields || []), JSON.stringify(o.problems || []), o.subtotal ?? null, o.shippingCost ?? null, o.total ?? null,
+      JSON.stringify(o.missingFields || []), JSON.stringify(o.problems || []), o.subtotal ?? null, o.shippingCost ?? null,
+      o.paymentDiscountPct ?? 0, o.paymentDiscount ?? 0, o.total ?? null,
       o.status, o.updatedAt ?? null, o.id);
     db.prepare('DELETE FROM pedido_items WHERE pedido_id = ?').run(o.id);
     const insI = db.prepare(`INSERT INTO pedido_items (pedido_id, producto_id, nombre, unidad, precio_unitario, cantidad, subtotal, texto_original, nota, estado,
